@@ -32,7 +32,7 @@ begin
     stimulus : process is
     begin
         -- start in high-Z state
-        oe_n <= '1'; wait for 20 ns;
+        oe_n <= '1'; wait for 50 ns;
 
         -- load some latches
         oe_n <= '0'; le <= '0'; d <= '0'; wait for 100 ns;
