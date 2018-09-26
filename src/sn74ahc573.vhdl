@@ -71,7 +71,4 @@ begin
 
     end process checkMetaStability;
 
-    -- update output
-    -- q <= intern;
-
 end architecture rtl;
