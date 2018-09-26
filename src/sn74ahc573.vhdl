@@ -43,7 +43,6 @@ begin
 
     -- update output
     q <= intern after T_PD when oe_n = '0' else
-    -- q <= intern when oe_n = '0' else
          'Z' after T_PD;
 
     -- TODO: replace with state machine for more precise propagation delays
