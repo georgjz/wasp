@@ -9,8 +9,8 @@
 --
 -------------------------------------------------------------------------------
 -- TODO: Fix latching during high-Z output
--- Fix metastability check
 -- Expand input/output to 8-bit/octal
+-- Model initial state of latch correctly
 --
 -------------------------------------------------------------------------------
 
@@ -33,14 +33,19 @@ end entity sn74ahc573;
 
 -- rtl architecture to check metastability
 architecture rtl of sn74ahc573 is
-    signal intern : std_logic := 'X';
+    signal intern : std_logic := '0';
 begin
 
     -- concurrent replacement of behavioral process
+    -- latch the input according LE state
+    intern <= d when le = '1' else
+              unaffected;
+
+    -- update output
+    q <= intern when oe_n = '0' else
+         'Z';
+
     -- TODO: replace with state machine for more precise propagation delays
-    intern <= 'Z' when oe_n = '1' else              -- high-impedance state
-               d  when oe_n = '0' and le = '1' else -- latch input
-               unaffected;                          -- else, nothing happens
 
     -- check metastability of latch enable signal
     checkMetaStability : process is
@@ -54,21 +59,19 @@ begin
             severity failure;
 
         -- check setup time
-        -- assert intern'delayed'stable(T_SU)
-        assert d'delayed'stable(T_SU)
+        assert intern'delayed'stable(T_SU)
             report "Input changed during setup time!"
             severity failure;
 
         -- check hold time
         wait for T_H;
-        -- assert intern'delayed'stable(T_H + T_SU)
-        assert d'delayed'stable(T_H + T_SU)
+        assert intern'delayed'stable(T_H + T_SU)
             report "Input signal changed during hold time!"
             severity failure;
 
     end process checkMetaStability;
 
     -- update output
-    q <= intern;
+    -- q <= intern;
 
 end architecture rtl;
