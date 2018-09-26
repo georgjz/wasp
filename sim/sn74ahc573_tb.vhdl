@@ -11,6 +11,7 @@
 -- TODO: Test latching during high-Z output
 -- Replace signal names with more descriptive/distinguishable names
 -- Improve test to capture all edges of the FSM
+-- Better insantiation with direct signal assignments
 --
 -------------------------------------------------------------------------------
 
