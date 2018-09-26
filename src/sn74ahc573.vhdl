@@ -54,13 +54,15 @@ begin
             severity failure;
 
         -- check setup time
-        assert intern'delayed'stable(T_SU)
+        -- assert intern'delayed'stable(T_SU)
+        assert d'delayed'stable(T_SU)
             report "Input changed during setup time!"
             severity failure;
 
         -- check hold time
         wait for T_H;
-        assert intern'delayed'stable(T_H + T_SU)
+        -- assert intern'delayed'stable(T_H + T_SU)
+        assert d'delayed'stable(T_H + T_SU)
             report "Input signal changed during hold time!"
             severity failure;
 

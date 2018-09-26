@@ -11,6 +11,8 @@
 -- TODO: Test latching during high-Z output
 -- Improve metastability check
 -- Replace signal names with more descriptive/distinguishable names
+-- Improve test to capture all edges of the FSM
+--
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -26,7 +28,7 @@ architecture test_bench of sn74ahc573_tb is
 begin
 
     dut : entity work.sn74ahc573(rtl)
-        port map ( oe_n, le, d, q );
+        port map ( d, q, oe_n, le );
 
     stimulus : process is
     begin
@@ -34,15 +36,16 @@ begin
         oe_n <= '1'; wait for 20 ns;
 
         -- load some latches
-        oe_n <= '0'; le <= '1'; d <= '0'; wait for 100 ns;
-        oe_n <= '0'; le <= '1'; d <= '1'; wait for 100 ns;
-        oe_n <= '0'; le <= '0'; d <= '1'; wait for 100 ns;
         oe_n <= '0'; le <= '0'; d <= '0'; wait for 100 ns;
-        oe_n <= '1'; le <= '1'; d <= '0'; wait for 100 ns;
-        oe_n <= '1'; le <= '1'; d <= '1'; wait for 100 ns;
+        -- oe_n <= '0'; le <= '1'; d <= '0'; wait for 100 ns;
+        -- oe_n <= '0'; le <= '1'; d <= '1'; wait for 100 ns;
+        -- oe_n <= '0'; le <= '0'; d <= '1'; wait for 100 ns;
+        -- oe_n <= '0'; le <= '0'; d <= '0'; wait for 100 ns;
+        -- oe_n <= '1'; le <= '1'; d <= '0'; wait for 100 ns;
+        -- oe_n <= '1'; le <= '1'; d <= '1'; wait for 100 ns;
 
         -- WARNING: These signal changes violate metastability
-        -- oe_n <= '0'; le <= '1'; d <= '1'; wait for 4 ns;
+        oe_n <= '0'; le <= '1'; d <= '1'; wait for 4 ns;
             -- violate minimal pulse width
         -- le <= '0'; wait for 1 ns;
             -- violate setup time
@@ -52,6 +55,12 @@ begin
         -- wait for 1 ns; le <= '0';
         -- wait for 1 ns; d <= '-1';
         -- wait for 1 ns;
+
+            -- violate hold time
+        wait for 1 ns; le <= '0';
+        d <= '0' after 1 ns;
+        -- le <= '0'; d <= '0' after 1 ns;
+        -- wait for 1 ns; d <= '0';
 
         -- wait forever
         wait;
