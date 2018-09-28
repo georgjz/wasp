@@ -17,6 +17,7 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 -- entity declaration
 entity sn74ahc573_tb is
@@ -24,7 +25,8 @@ end entity sn74ahc573_tb;
 
 -- test bench architecture
 architecture test_bench of sn74ahc573_tb is
-    signal oe_n, le, d, q : std_logic := 'X';
+    signal d, q : std_logic_vector (7 downto 0) := "XXXXXXXX";
+    signal oe_n, le : std_logic := 'X';
 begin
 
     dut : entity work.sn74ahc573(rtl)
@@ -36,13 +38,13 @@ begin
         oe_n <= '1'; wait for 50 ns;
 
         -- load some latches
-        oe_n <= '0'; le <= '0'; d <= '0'; wait for 100 ns;
-        oe_n <= '0'; le <= '1'; d <= '0'; wait for 100 ns;
-        oe_n <= '0'; le <= '1'; d <= '1'; wait for 100 ns;
-        oe_n <= '0'; le <= '0'; d <= '1'; wait for 100 ns;
-        oe_n <= '0'; le <= '0'; d <= '0'; wait for 100 ns;
-        oe_n <= '1'; le <= '1'; d <= '0'; wait for 100 ns;
-        oe_n <= '1'; le <= '1'; d <= '1'; wait for 100 ns;
+        oe_n <= '0'; le <= '0'; d <= X"AA"; wait for 100 ns;
+        oe_n <= '0'; le <= '1'; d <= X"AA"; wait for 100 ns;
+        oe_n <= '0'; le <= '1'; d <= X"55"; wait for 100 ns;
+        oe_n <= '0'; le <= '0'; d <= X"55"; wait for 100 ns;
+        oe_n <= '0'; le <= '0'; d <= X"AA"; wait for 100 ns;
+        oe_n <= '1'; le <= '1'; d <= X"AA"; wait for 100 ns;
+        oe_n <= '1'; le <= '1'; d <= X"55"; wait for 100 ns;
 
         -- wait in high-Z state
         -- oe_n <= '1'; le <= '0'; wait for 20 ns;
