@@ -1,30 +1,53 @@
--- simple model of a SN74AHC573 D-type Transparent Latch
+-------------------------------------------------------------------------------
+--
+-- unit name: SN74AHC573 D-Type Transparent Latch (sn74ahc573)
+-- author: Georg Ziegler
+--
+-- description: A octal D-type transparent latch with tri-state output
+--
+-- dependencies: ieee library
+--
+-------------------------------------------------------------------------------
+-- TODO: Fix latching during high-Z output
+-- Expand input/output to 8-bit/octal
+-- Model initial state of latch correctly
+--
+-------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 -- entity declaration
 entity sn74ahc573 is
-    port ( oe_n, le : in std_logic;     -- control signals
-           d : in std_logic;            -- data input
-           q : out std_logic );         -- data output
+    generic ( constant DATA_WIDTH : integer := 8);
+    port    ( d        : in std_logic_vector (DATA_WIDTH - 1 downto 0);     -- Data input
+              q        : out std_logic_vector (DATA_WIDTH - 1 downto 0);    -- Data output
+              oe_n     : in std_logic;     -- Output enable, active-low
+              le       : in std_logic );   -- Latch enable
 
     -- TODO: add detailed timing constants
-    constant t_pd   : delay_length := 9 ns;     -- Propagation delay
-    constant t_w    : delay_length := 5 ns;     -- Pulse duration, LE high
-    constant t_su   : delay_length := 3.5 ns;   -- Setup time, data before LE falling edge
-    constant t_h    : delay_length := 1.5 ns;   -- Hold time, data after LE falling edge
+    constant T_PD   : delay_length := 9 ns;     -- Propagation delay
+    constant T_W    : delay_length := 5 ns;     -- Pulse duration, LE high
+    constant T_SU   : delay_length := 3.5 ns;   -- Setup time, data before LE falling edge
+    constant T_H    : delay_length := 1.5 ns;   -- Hold time, data after LE falling edge
 end entity sn74ahc573;
 
 -- rtl architecture to check metastability
 architecture rtl of sn74ahc573 is
-    signal intern : std_logic := 'X';
+    signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := "XXXXXXXX";
 begin
 
     -- concurrent replacement of behavioral process
+    -- latch the input according LE state
+    intern <= d when le = '1' else
+              unaffected;
+
+    -- update output
+    q <= intern after T_PD when oe_n = '0' else
+         "ZZZZZZZZ" after T_PD;
+
     -- TODO: replace with state machine for more precise propagation delays
-    intern <= 'Z' when oe_n = '1' else              -- high-impedance state
-               d  when oe_n = '0' and le = '1' else -- latch input
-               unaffected;                          -- else, nothing happens
 
     -- check metastability of latch enable signal
     checkMetaStability : process is
@@ -33,24 +56,21 @@ begin
         wait until falling_edge(le);
 
         --check pulse width
-        assert le'delayed'stable(t_w)
+        assert le'delayed'stable(T_W)
             report "LE pulse width too short!"
             severity failure;
 
         -- check setup time
-        assert intern'delayed'stable(t_su)
+        assert intern'delayed'stable(T_SU)
             report "Input changed during setup time!"
             severity failure;
 
         -- check hold time
-        wait for t_h;
-        assert intern'delayed'stable(t_h + t_su)
+        wait for T_H;
+        assert intern'delayed'stable(T_H + T_SU)
             report "Input signal changed during hold time!"
             severity failure;
 
     end process checkMetaStability;
-
-    -- update output
-    q <= intern;
 
 end architecture rtl;
