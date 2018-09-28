@@ -16,13 +16,15 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 -- entity declaration
 entity sn74ahc573 is
-    port ( d        : in std_logic;     -- Data input
-           q        : out std_logic;    -- Data output
-           oe_n     : in std_logic;     -- Output enable, active-low
-           le       : in std_logic );   -- Latch enable
+    generic ( constant DATA_WIDTH : integer := 8);
+    port    ( d        : in std_logic_vector (DATA_WIDTH - 1 downto 0);     -- Data input
+              q        : out std_logic_vector (DATA_WIDTH - 1 downto 0);    -- Data output
+              oe_n     : in std_logic;     -- Output enable, active-low
+              le       : in std_logic );   -- Latch enable
 
     -- TODO: add detailed timing constants
     constant T_PD   : delay_length := 9 ns;     -- Propagation delay
@@ -33,7 +35,7 @@ end entity sn74ahc573;
 
 -- rtl architecture to check metastability
 architecture rtl of sn74ahc573 is
-    signal intern : std_logic := '0';
+    signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := "XXXXXXXX";
 begin
 
     -- concurrent replacement of behavioral process
@@ -43,7 +45,7 @@ begin
 
     -- update output
     q <= intern after T_PD when oe_n = '0' else
-         'Z' after T_PD;
+         "ZZZZZZZZ" after T_PD;
 
     -- TODO: replace with state machine for more precise propagation delays
 
