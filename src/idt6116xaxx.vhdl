@@ -30,31 +30,31 @@ end entity idt6116xaxx;
 -- rtl architecture with metastability and timing checks
 architecture rtl of idt6116xaxx is
 -- internal signals
-    constant RAM_DEPTH :integer := 2**ADDR_WIDTH;
+    constant RAM_DEPTH : integer := 2**ADDR_WIDTH;
 
     signal data_out : std_logic_vector (DATA_WIDTH - 1 downto 0);
 
     type RAM is array (integer range <>) of std_logic_vector (DATA_WIDTH - 1 downto 0);
     signal mem : RAM (0 to RAM_DEPTH - 1);
 begin
-----------------Code Starts Here------------------
--- Tri-State Buffer control
-    data <= data_out when (cs_n = '1' and oe_n = '1' and we_n = '0') else
-            'Z';
+
+    -- Tri-State Buffer control
+    data <= data_out when (cs_n = '0' and oe_n = '1' and we_n = '1') else
+            (others => 'Z');
+
+    -- Memory Read Block
+    readFromMemory : process (addr, cs_n, oe_n, we_n, mem) is
+    begin
+        if (cs_n = '0' and oe_n = '0' and we_n = '1') then
+            data_out <= mem(conv_integer(addr));
+        end if;
+    end process;
 
     -- Memory Write Block
     writeToMemory : process (addr, data, cs_n, we_n) is
     begin
-        if (cs_n = '1' and we_n = '1') then
+        if (cs_n = '0' and we_n = '0') then
             mem(conv_integer(addr)) <= data;
-        end if;
-end process;
-
-    -- Memory Read Block
-    readFromMemory : process (addr, cs_n, we_n, oe_n, mem) is
-    begin
-        if (cs = '1' and we = '0' and oe = '1')  then
-            data_out <= mem(conv_integer(addr));
         end if;
     end process;
 
