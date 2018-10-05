@@ -40,7 +40,7 @@ architecture rtl of idt6116xaxx is
 begin
 
     -- Tri-State Buffer control
-    data <= data_out when (cs_n = '0' and oe_n = '1' and we_n = '1') else
+    data <= data_out when (cs_n = '0' and oe_n = '0' and we_n = '1') else
             (others => 'Z');
 
     -- Memory Read Block
