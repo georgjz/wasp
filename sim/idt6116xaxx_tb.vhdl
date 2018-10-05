@@ -37,7 +37,22 @@ begin
 
     -- code
     stimulus : process is
+        type data_buffer is range 0 to 255;
+        variable datum : data_buffer := 0;
     begin
+        -- set control lines
+        cs_n <= '0';
+        oe_n <= '0';
+        we_n <= '0';
+        wait for 100 ns;
+
+        -- fill RAM with dummy data
+        for i in 0 to 2**11 loop
+            --code
+            data_in <= X"da";
+            addr_in <= std_logic_vector(to_unsigned(i, addr_in'length));
+            wait for 100 ns;
+        end loop;
         -- wait forever
         wait;
     end process stimulus;
