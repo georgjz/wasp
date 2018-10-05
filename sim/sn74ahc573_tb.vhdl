@@ -25,7 +25,7 @@ end entity sn74ahc573_tb;
 
 -- test bench architecture
 architecture test_bench of sn74ahc573_tb is
-    signal d, q : std_logic_vector (7 downto 0) := "XXXXXXXX";
+    signal d, q : std_logic_vector (7 downto 0) := (others => 'X');
     signal oe_n, le : std_logic := 'X';
 begin
 

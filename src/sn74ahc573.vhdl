@@ -35,7 +35,7 @@ end entity sn74ahc573;
 
 -- rtl architecture to check metastability
 architecture rtl of sn74ahc573 is
-    signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := "XXXXXXXX";
+    signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => 'X');
 begin
 
     -- concurrent replacement of behavioral process
@@ -45,7 +45,8 @@ begin
 
     -- update output
     q <= intern after T_PD when oe_n = '0' else
-         "ZZZZZZZZ" after T_PD;
+         -- "ZZZZZZZZ" after T_PD;
+         (others => 'Z') after T_PD;
 
     -- TODO: replace with state machine for more precise propagation delays
 
