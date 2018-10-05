@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+-- use ieee.std_logic_unsigned.all;
 
 -- entity declaration
 entity idt6116xaxx is
@@ -46,7 +47,7 @@ begin
     readFromMemory : process (addr, cs_n, oe_n, we_n, mem) is
     begin
         if (cs_n = '0' and oe_n = '0' and we_n = '1') then
-            data_out <= mem(conv_integer(addr));
+            data_out <= mem(to_integer(unsigned(addr)));
         end if;
     end process;
 
@@ -54,7 +55,7 @@ begin
     writeToMemory : process (addr, data, cs_n, we_n) is
     begin
         if (cs_n = '0' and we_n = '0') then
-            mem(conv_integer(addr)) <= data;
+            mem(to_integer(unsigned(addr))) <= data;
         end if;
     end process;
 

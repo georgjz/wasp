@@ -23,8 +23,23 @@ end entity idt6116xaxx_tb;
 -- test bench architecture
 architecture test_bench of idt6116xaxx_tb is
     -- signal
+    signal data_in : std_logic_vector (7 downto 0) := (others => 'Z');
+    signal addr_in : std_logic_vector (10 downto 0) := (others => 'Z');
+    signal cs_n, oe_n, we_n : std_logic := 'Z';
 begin
 
+    dut : entity work.idt6116xaxx(rtl)
+        port map ( data => data_in,
+                   addr => addr_in,
+                   cs_n => cs_n,
+                   we_n => we_n,
+                   oe_n => oe_n );
+
     -- code
+    stimulus : process is
+    begin
+        -- wait forever
+        wait;
+    end process stimulus;
 
 end architecture test_bench;
