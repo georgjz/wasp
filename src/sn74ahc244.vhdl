@@ -8,9 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO: Fix latching during high-Z output
--- Expand input/output to 8-bit/octal
--- Model initial state of latch correctly
+-- TODO: Add timing constants
 --
 -------------------------------------------------------------------------------
 
@@ -21,8 +19,8 @@ use ieee.numeric_std.all;
 -- entity declaration
 entity sn74ahc244 is
     generic ( constant DATA_WIDTH : integer := 8 );
-    port    ( a        : in std_logic_vector (DATA_WIDTH - 1 downto 0);     -- Data input
-              y        : out std_logic_vector (DATA_WIDTH - 1 downto 0);    -- Data output
+    port    ( a     : in std_logic_vector (DATA_WIDTH - 1 downto 0);     -- Data input
+              y     : out std_logic_vector (DATA_WIDTH - 1 downto 0);    -- Data output
               oe1_n : in std_logic;     -- Output enable, active-low for lower-half of a
               oe2_n : in std_logic );   -- Output enable, active-low for upper-half of a
 
@@ -47,40 +45,10 @@ begin
     -- update output
     y <= intern;
 
-    -- concurrent replacement of behavioral process
-    -- latch the input according LE state
-    -- intern <= d when le = '1' else
-              -- unaffected;
-
-    -- update output
-    -- q <= intern after T_PD when oe_n = '0' else
-         -- "ZZZZZZZZ" after T_PD;
-         -- (others => 'Z') after T_PD;
-
-    -- TODO: replace with state machine for more precise propagation delays
-
     -- check metastability of latch enable signal
     -- checkMetaStability : process is
     -- begin
-    --     -- wait for LE falling edge
-    --     wait until falling_edge(le);
-    --
-    --     --check pulse width
-    --     assert le'delayed'stable(T_W)
-    --         report "LE pulse width too short!"
-    --         severity failure;
-    --
-    --     -- check setup time
-    --     assert intern'delayed'stable(T_SU)
-    --         report "Input changed during setup time!"
-    --         severity failure;
-    --
-    --     -- check hold time
-    --     wait for T_H;
-    --     assert intern'delayed'stable(T_H + T_SU)
-    --         report "Input signal changed during hold time!"
-    --         severity failure;
-    --
+        -- code
     -- end process checkMetaStability;
 
 end architecture rtl;
