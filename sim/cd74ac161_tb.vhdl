@@ -70,6 +70,7 @@ begin
 
         -- preload
         load_n <= '0';
+        clr_n  <= '1';
         d <= X"b";
         wait for 100 ns;
 
@@ -77,11 +78,27 @@ begin
         load_n <= '1';
         enp <= '1';
         ent <= '1';
+        wait for 1000 ns;
+
+        -- inhibt for 500 ns
+        enp <= '0';
         wait for 500 ns;
 
+        -- clear counter
+        load_n <= '1';
+        clr_n  <= '0';
+        wait for 100 ns;
+
+        -- count up
+        load_n <= '1';
+        clr_n <= '1';
+        enp <= '1';
+        ent <= '1';
+        wait for 1000 ns;
 
         -- stop clock and wait forever
         finished <= '1';
+        wait for 100 ns;
         wait;
 
     end process stimulus;

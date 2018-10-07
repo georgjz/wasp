@@ -41,34 +41,38 @@ architecture rtl of cd74ac161 is
     -- variable count : unsigned (3 downto 0);
 begin
 
-    -- clear counter
-    intern <= (others => '0') when clr_n = '0'; -- else
-              -- d               when load_n = '0';
+    -- clear or preset counter
+    intern <= (others => '0')
+                    when clr_n = '0' else
+              d
+                    when load_n = '0' else
+              std_logic_vector(unsigned(intern) + 1)
+                    when (rising_edge(clk) and enp = '1' and ent = '1');
 
-    -- preset counter
-    -- intern <= d when load_n = '0';
+    -- update RCO
+    rco <= '1' when (intern = X"f" and ent = '1') else '0';
 
     -- count process
-    count : process is
-    begin
-        wait until rising_edge(clk);
-        
-        -- preset counter
-        if (load_n = '0') then
-            intern <= d;
-        -- check for up count
-        elsif (enp = '1' and ent = '1') then
-            -- code
-            intern <= std_logic_vector(unsigned(intern) + 1);
-        end if;
-
-        -- update RCO signal
-        if intern = X"f" then
-            rco <= '1';
-        else
-            rco <= '0';
-        end if;
-    end process count;
+    -- count : process is
+    -- begin
+    --     wait until rising_edge(clk);
+    --
+    --     -- preset counter
+    --     -- if (load_n = '0') then
+    --         -- intern <= d;
+    --     -- check for up count
+    --     if (enp = '1' and ent = '1') then
+    --         -- code
+    --         intern <= std_logic_vector(unsigned(intern) + 1);
+    --     end if;
+    --
+    --     -- update RCO signal
+    --     -- if intern = X"f" then
+    --         -- rco <= '1';
+    --     -- else
+    --         -- rco <= '0';
+    --     -- end if;
+    -- end process count;
 
     -- update output
     q <= intern;
