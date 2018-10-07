@@ -59,4 +59,10 @@ begin
         end if;
     end process;
 
+    -- check metastability of latch enable signal
+    -- checkMetaStability : process is
+    -- begin
+        -- code
+    -- end process checkMetaStability;
+    
 end architecture rtl;
