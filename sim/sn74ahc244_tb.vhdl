@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Test bench for SN74AHC244 (sn74ahc244_tb)
+-- unit name: Testbench for SN74AHC244 (sn74ahc244_tb)
 -- author: Georg Ziegler
 --
--- description: This test bench verfies functionality of the sn74ahc244 unit
+-- description: This testbench verfies functionality of the sn74ahc244 unit
 --
 -- dependencies: ieee library
 --
@@ -21,7 +21,7 @@ entity sn74ahc244_tb is
 end entity sn74ahc244_tb;
 
 -- test bench architecture
-architecture test_bench of sn74ahc244_tb is
+architecture testbench of sn74ahc244_tb is
     signal a_in, y_in : std_logic_vector (7 downto 0) := (others => 'X');
     signal oe1_n, oe2_n : std_logic := 'X';
 begin
@@ -68,4 +68,4 @@ begin
     end process stimulus;
 
 
-end architecture test_bench;
+end architecture testbench;
