@@ -36,7 +36,9 @@ architecture test_bench of input_panel_tb is
     signal examine_next_inv : std_logic := '1';
     -- additional control signals
     signal addr_load    : std_logic := '1';
+    signal addr_next    : std_logic := '0';
     signal addr_load_inv: std_logic := '0';
+    signal addr_next_inv: std_logic := '1';
     -- internal signals
     signal rco_ct0_ct1  : std_logic := 'X';
     signal rco_ct1_ct2  : std_logic := 'X';
@@ -62,42 +64,44 @@ begin
     examine_next_inv <= not examine_next;
 
     -- address load control
-    addr_load <= not (deposit or deposit_next or examine or examine_next);
+    addr_load     <= not (deposit or examine);
+    addr_next     <= (deposit_next or examine_next);
     addr_load_inv <= not addr_load;
+    addr_next_inv <= not addr_next;
 
     -- bits 3 down to 0
     input_counter_0 : entity work.cd74ac161(rtl)
         port map ( clk    => sys_clk,
                    clr_n  => CONST_HIGH,
                    load_n => addr_load,
-                   enp    => addr_load_inv, -- !!
-                   ent    => addr_load_inv, -- !!
+                   enp    => '1', --addr_next, -- !!
+                   ent    => '1', --addr_next, -- !!
                    rco    => rco_ct1_ct2,
                    d      => switch_input(3 downto 0),
                    q      => addr_bus(3 downto 0) );
 
     -- bits 7 down to 4
-    input_counter_1 : entity work.cd74ac161(rtl)
-        port map ( clk    => sys_clk,
-                   clr_n  => CONST_HIGH,
-                   load_n => addr_load,
-                   enp    => rco_ct0_ct1,
-                   ent    => rco_ct0_ct1,
-                   rco    => rco_ct1_ct2,
-                   d      => switch_input(7 downto 4),
-                   q      => addr_bus(7 downto 4) );
-
-    -- bits 11 down to 8
-    input_counter_2 : entity work.cd74ac161(rtl)
-        port map ( clk    => sys_clk,
-                   clr_n  => CONST_HIGH,
-                   load_n => addr_load,
-                   enp    => rco_ct1_ct2,
-                   ent    => rco_ct1_ct2,
-                   rco    => open,
-                   d      => switch_input(11 downto 8),
-                   q      => addr_bus(11 downto 8) );
-
+    -- input_counter_1 : entity work.cd74ac161(rtl)
+    --     port map ( clk    => sys_clk,
+    --                clr_n  => CONST_HIGH,
+    --                load_n => addr_load,
+    --                enp    => rco_ct0_ct1,
+    --                ent    => rco_ct0_ct1,
+    --                rco    => rco_ct1_ct2,
+    --                d      => switch_input(7 downto 4),
+    --                q      => addr_bus(7 downto 4) );
+    --
+    -- -- bits 11 down to 8
+    -- input_counter_2 : entity work.cd74ac161(rtl)
+    --     port map ( clk    => sys_clk,
+    --                clr_n  => CONST_HIGH,
+    --                load_n => addr_load,
+    --                enp    => rco_ct1_ct2,
+    --                ent    => rco_ct1_ct2,
+    --                rco    => open,
+    --                d      => switch_input(11 downto 8),
+    --                q      => addr_bus(11 downto 8) );
+    --
     -- code
     stimulus : process is
         -- type data_buffer is range 0 to 255;
@@ -116,6 +120,14 @@ begin
         wait for 50 ns;
         examine <= '0';
 
+        -- examine next
+        examine_next <= '1';
+        wait for 50 ns;
+        examine_next <= '0';
+
+        -- burn 3 cycles
+        wait for 300 ns;
+        
         -- stop clock and wait forever
         finished <= '1';
         wait for 300 ns;

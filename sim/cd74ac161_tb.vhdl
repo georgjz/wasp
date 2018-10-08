@@ -73,6 +73,7 @@ begin
         clr_n  <= '1';
         d <= X"b";
         wait for 100 ns;
+        -- wait for 144 ns;
 
         -- count up
         load_n <= '1';
