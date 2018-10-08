@@ -8,7 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO:
+-- TODO: Fix  switch input width
 --
 -------------------------------------------------------------------------------
 
@@ -74,34 +74,34 @@ begin
         port map ( clk    => sys_clk,
                    clr_n  => CONST_HIGH,
                    load_n => addr_load,
-                   enp    => '1', --addr_next, -- !!
-                   ent    => '1', --addr_next, -- !!
-                   rco    => rco_ct1_ct2,
+                   enp    => addr_next, -- !!
+                   ent    => addr_next, -- !!
+                   rco    => rco_ct0_ct1,
                    d      => switch_input(3 downto 0),
                    q      => addr_bus(3 downto 0) );
 
     -- bits 7 down to 4
-    -- input_counter_1 : entity work.cd74ac161(rtl)
-    --     port map ( clk    => sys_clk,
-    --                clr_n  => CONST_HIGH,
-    --                load_n => addr_load,
-    --                enp    => rco_ct0_ct1,
-    --                ent    => rco_ct0_ct1,
-    --                rco    => rco_ct1_ct2,
-    --                d      => switch_input(7 downto 4),
-    --                q      => addr_bus(7 downto 4) );
-    --
-    -- -- bits 11 down to 8
-    -- input_counter_2 : entity work.cd74ac161(rtl)
-    --     port map ( clk    => sys_clk,
-    --                clr_n  => CONST_HIGH,
-    --                load_n => addr_load,
-    --                enp    => rco_ct1_ct2,
-    --                ent    => rco_ct1_ct2,
-    --                rco    => open,
-    --                d      => switch_input(11 downto 8),
-    --                q      => addr_bus(11 downto 8) );
-    --
+    input_counter_1 : entity work.cd74ac161(rtl)
+        port map ( clk    => sys_clk,
+                   clr_n  => CONST_HIGH,
+                   load_n => addr_load,
+                   enp    => rco_ct0_ct1,
+                   ent    => rco_ct0_ct1,
+                   rco    => rco_ct1_ct2,
+                   d      => switch_input(7 downto 4),
+                   q      => addr_bus(7 downto 4) );
+
+    -- bits 11 down to 8
+    input_counter_2 : entity work.cd74ac161(rtl)
+        port map ( clk    => sys_clk,
+                   clr_n  => CONST_HIGH,
+                   load_n => addr_load,
+                   enp    => rco_ct1_ct2,
+                   ent    => rco_ct1_ct2,
+                   rco    => open,
+                   d      => switch_input(11 downto 8),
+                   q      => addr_bus(11 downto 8) );
+
     -- code
     stimulus : process is
         -- type data_buffer is range 0 to 255;
@@ -113,7 +113,7 @@ begin
 
         -- set address input to $1de
         switch_input <= X"1de";
-        wait for 100 ns;
+        wait for 75 ns;
 
         -- examine address $1de
         examine <= '1';
@@ -125,9 +125,28 @@ begin
         wait for 50 ns;
         examine_next <= '0';
 
+        -- examine next
+        wait for 50 ns;
+        examine_next <= '1';
+        wait for 50 ns;
+        examine_next <= '0';
+
+        -- examine next
+        wait for 50 ns;
+        examine_next <= '1';
+        wait for 50 ns;
+        examine_next <= '0';
+
+        -- examine next
+        switch_input <= X"123";
+        wait for 50 ns;
+        examine <= '1';
+        wait for 50 ns;
+        examine <= '0';
+
         -- burn 3 cycles
         wait for 300 ns;
-        
+
         -- stop clock and wait forever
         finished <= '1';
         wait for 300 ns;
