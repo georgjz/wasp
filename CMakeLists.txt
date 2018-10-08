@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Define project
-project(ghdl_sample_project)
+project(wasp_6502)
 
 # Define required cmake version
 cmake_minimum_required(VERSION 2.8)
@@ -32,7 +32,7 @@ add_subdirectory(src/)
 # Create all tests
 add_subdirectory(sim/)
 
-add_custom_target(index ALL COMMAND ghdl -i --workdir=${CMAKE_CURRENT_BINARY_DIR} ${VHDL_SOURCES})
+add_custom_target(index ALL COMMAND ghdl -i --std=08 --workdir=${CMAKE_CURRENT_BINARY_DIR} ${VHDL_SOURCES})
 
 # Add compile test target
 set(CTEST_OUTPUT_ON_FAILURE 1)
