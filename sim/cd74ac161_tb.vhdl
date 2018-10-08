@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Test bench for CD74AC161 (cd74ac161_tb)
+-- unit name: Testbench for CD74AC161 (cd74ac161_tb)
 -- author: Georg Ziegler
 --
--- description: This test bench verfies functionality of the cd74ac161 unit
+-- description: This testbench verfies functionality of the cd74ac161 unit
 --
 -- dependencies: ieee library
 --
@@ -21,7 +21,7 @@ entity cd74ac161_tb is
 end entity cd74ac161_tb;
 
 -- test bench architecture
-architecture test_bench of cd74ac161_tb is
+architecture testbench of cd74ac161_tb is
     signal clk    : std_logic := '0';            -- clock signal
     signal clr_n  : std_logic := 'X';            -- async clear signal
     signal load_n : std_logic := 'X';            -- load/preset signal
@@ -104,4 +104,4 @@ begin
     end process stimulus;
 
 
-end architecture test_bench;
+end architecture testbench;

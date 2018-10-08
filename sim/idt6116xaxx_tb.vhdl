@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Test bench for IDT6116xAxx (idt6116xaxx_tb)
+-- unit name: Testbench for IDT6116xAxx (idt6116xaxx_tb)
 -- author: Georg Ziegler
 --
--- description: This test bench verfies functionality of the idt6116xaxx unit
+-- description: This testbench verfies functionality of the idt6116xaxx unit
 --
 -- dependencies: ieee library
 --
@@ -21,7 +21,7 @@ entity idt6116xaxx_tb is
 end entity idt6116xaxx_tb;
 
 -- test bench architecture
-architecture test_bench of idt6116xaxx_tb is
+architecture testbench of idt6116xaxx_tb is
     -- signal
     signal data_in : std_logic_vector (7 downto 0) := (others => 'Z');
     signal addr_in : std_logic_vector (10 downto 0) := (others => 'Z');
@@ -100,4 +100,4 @@ begin
         wait;
     end process stimulus;
 
-end architecture test_bench;
+end architecture testbench;
