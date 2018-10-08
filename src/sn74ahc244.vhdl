@@ -8,7 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO: Add timing constants
+-- TODO: Improve delay mechanism
 --
 -------------------------------------------------------------------------------
 
@@ -25,10 +25,8 @@ entity sn74ahc244 is
               oe2_n : in std_logic );   -- Output enable, active-low for upper-half of a
 
     -- TODO: add detailed timing constants
-    -- constant T_PD   : delay_length := 9 ns;     -- Propagation delay
-    -- constant T_W    : delay_length := 5 ns;     -- Pulse duration, LE high
-    -- constant T_SU   : delay_length := 3.5 ns;   -- Setup time, data before LE falling edge
-    -- constant T_H    : delay_length := 1.5 ns;   -- Hold time, data after LE falling edge
+    constant T_PLH  : delay_length := 6.5 ns;   -- Propagation delay A -> Y
+    constant T_PZ   : delay_length := 8.5 ns;   -- Propagation delay /OE -> Y
 end entity sn74ahc244;
 
 -- rtl architecture to check metastability
@@ -37,18 +35,13 @@ architecture rtl of sn74ahc244 is
 begin
 
     -- read input
-    intern <= a                        when (oe1_n = '0' and oe2_n = '0') else  -- buffer both nibbles
-              (a(7 downto 4) & "ZZZZ") when (oe1_n = '1' and oe2_n = '0') else  -- lower nibble in high-Z
-              ("ZZZZ" & a(3 downto 0)) when (oe1_n = '0' and oe2_n = '1') else  -- lower nibble in high-Z
-              (others => 'Z');
+    intern <=
+        a                        after T_PZ when (oe1_n = '0' and oe2_n = '0') else  -- buffer both nibbles
+        (a(7 downto 4) & "ZZZZ") after T_PZ when (oe1_n = '1' and oe2_n = '0') else  -- lower nibble in high-Z
+        ("ZZZZ" & a(3 downto 0)) after T_PZ when (oe1_n = '0' and oe2_n = '1') else  -- lower nibble in high-Z
+        (others => 'Z') after T_PZ;
 
     -- update output
     y <= intern;
-
-    -- check metastability of latch enable signal
-    -- checkMetaStability : process is
-    -- begin
-        -- code
-    -- end process checkMetaStability;
 
 end architecture rtl;
