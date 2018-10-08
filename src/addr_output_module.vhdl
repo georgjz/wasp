@@ -27,8 +27,6 @@ end entity addr_output_module;
 -- structural architecture
 architecture structure of addr_output_module is
     constant GND  : std_logic := '0';       -- represents ground/constant low
-    -- signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => 'X');
-    -- signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => 'X');
 begin
 
     dlatch1 : entity work.sn74ahc573(rtl)
