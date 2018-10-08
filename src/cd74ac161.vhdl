@@ -9,7 +9,7 @@
 --
 -------------------------------------------------------------------------------
 -- TODO: Improve input/port map with package
--- Fix delays
+-- Improve delays
 -- Add metastability check
 --
 -------------------------------------------------------------------------------
@@ -31,10 +31,7 @@ entity cd74ac161 is
               q      : out std_logic_vector (DATA_WIDTH - 1 downto 0) );
 
     -- TODO: add detailed timing constants
-    -- constant T_PD   : delay_length := 9 ns;     -- Propagation delay
-    -- constant T_W    : delay_length := 5 ns;     -- Pulse duration, LE high
-    -- constant T_SU   : delay_length := 3.5 ns;   -- Setup time, data before LE falling edge
-    -- constant T_H    : delay_length := 1.5 ns;   -- Hold time, data after LE falling edge
+    constant T_PD   : delay_length := 16 ns;     -- Propagation delay
 end entity cd74ac161;
 
 -- rtl architecture to check metastability
@@ -52,10 +49,10 @@ begin
                     when (rising_edge(clk) and enp = '1' and ent = '1');
 
     -- update RCO
-    rco <= '1' when (intern = X"f" and ent = '1') else '0';
+    rco <= '1' after T_PD when (intern = X"f" and ent = '1') else '0' after T_PD;
 
     -- update output
-    q <= intern;
+    q <= intern after T_PD;
 
     -- check metastability of latch enable signal
     -- checkMetaStability : process is
