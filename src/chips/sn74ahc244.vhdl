@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 --
--- unit name: SN74AHC244 D-Type Transparent Latch (sn74ahc244)
+-- unit name: SN74AHC244 Octal Tri-State Buffer (sn74ahc244)
 -- author: Georg Ziegler
 --
 -- description: A octal Buffer/Driver with three-state output
