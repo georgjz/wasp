@@ -8,7 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO:
+-- TODO: Improve metastability check
 --
 -------------------------------------------------------------------------------
 
@@ -96,6 +96,29 @@ begin
         enp <= '1';
         ent <= '1';
         wait for 1000 ns;
+
+        -- WARNING: THESE SIGNALS VIOLATE METASTABILITY
+
+        -- violate clear recovery
+        wait until falling_edge(clk);
+        clr_n <= '0';
+        wait for 46 ns;
+        clr_n <= '1';
+
+        -- violate load setup
+        wait until falling_edge(clk);
+        load_n <= '0';
+        wait for 46 ns;
+        load_n <= '1';
+
+        -- violate data setup
+        wait until falling_edge(clk);
+        d <= X"e";
+        wait for 47 ns;
+        d <= X"f";
+
+        wait until falling_edge(clk);
+        -- --------------------------------------------
 
         -- stop clock and wait forever
         finished <= '1';
