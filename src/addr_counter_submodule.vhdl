@@ -48,6 +48,7 @@ begin
                    enp    => rco_ct1_ct2,
                    ent    => rco_ct1_ct2,
                    rco    => open,
+                   d(3)   => '0',
                    d(2 downto 0) => addr_in(ADDR_WIDTH - 1 downto 8),
                    q(2 downto 0) => addr_out(ADDR_WIDTH - 1 downto 8) );
 
