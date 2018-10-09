@@ -38,13 +38,13 @@ begin
 
     -- clock generator
     sys_clk <= not sys_clk after 100 ns when finished /= '1' else '0';
-    clr_n <= '1';
 
     stimulus : process is
         constant CLK_CYC : delay_length := 200 ns;
     begin
 
         -- wait for 3 clock cycles
+        clr_n <= '1';
         wait for 3 * CLK_CYC;
         wait for CLK_CYC / 2;
 
@@ -56,10 +56,19 @@ begin
 
         -- count up
         for i in 0 to 20 loop
+            wait for 10 ns;
             next_addr <= not next_addr;
-            wait for 2 * CLK_CYC;
+            wait for 2 * CLK_CYC - 10 ns;
         end loop;
         next_addr <= '0';
+
+        -- WARNING: THIS SIGNALS VIOLATE METASTABILITY
+        wait for 100 ns;
+        clr_n <= '0';
+        wait for 98 ns;
+        clr_n <= '1';
+        wait for 2 * CLK_CYC;
+        -- -------------------------------------------
 
         -- wait forever
         finished <= '1';
