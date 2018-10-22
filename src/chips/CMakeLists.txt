@@ -4,5 +4,4 @@ add_sources(
     sn74ahc244.vhdl     # octal buffer/driver
     sn74ahc573.vhdl     # octal d-type transparent latch
     idt6116xaxx.vhdl    # 2K x 8 static RAM
-    blackbox.vhdl    # 2K x 8 static RAM
 )
