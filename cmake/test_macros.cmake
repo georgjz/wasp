@@ -30,7 +30,7 @@ macro (add_test_sources)
         file(MAKE_DIRECTORY ${TRACE_PATH})
         set(TRACE_PATH "${TRACE_PATH}/${ENTITY_NAME}.vcd")
 
-        add_custom_target("${TEST_NAME}" COMMAND ghdl -m --workdir="${CMAKE_BINARY_DIR}" ${ENTITY_NAME} DEPENDS index)
+        add_custom_target("${TEST_NAME}" COMMAND ghdl -m --workdir="${CMAKE_BINARY_DIR}" --std=08 ${ENTITY_NAME} DEPENDS index)
         list (APPEND VHDL_SOURCES "${CMAKE_SOURCE_DIR}/${FILE_SRC}")
         add_test(NAME "${TEST_NAME}" COMMAND ghdl -r --workdir="${CMAKE_BINARY_DIR}" "${ENTITY_NAME}" --vcd=${TRACE_PATH})
 

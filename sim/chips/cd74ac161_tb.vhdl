@@ -98,7 +98,6 @@ begin
         wait for 1000 ns;
 
         -- WARNING: THESE SIGNALS VIOLATE METASTABILITY
-
         -- violate clear recovery
         wait until falling_edge(clk);
         clr_n <= '0';

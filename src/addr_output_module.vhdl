@@ -34,7 +34,6 @@ begin
                    le   => latch,                   -- will latch the new address
                    d(7 downto 3) => (7 downto 3 => GND),
                    d(2 downto 0) => addr_in(ADDR_WIDTH - 1 downto 8),
-                   -- q(7 downto 3) => (7 downto 3 => GND),
                    q(2 downto 0) => led_out(ADDR_WIDTH - 1 downto 8) );
 
     dlatch0 : entity work.sn74ahc573(rtl)
