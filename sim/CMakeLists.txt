@@ -3,7 +3,8 @@ add_subdirectory(chips/)
 
 # add sources
 add_test_sources(
-    addr_counter_submodule_tb.vhdl  # Address LED Ouput
+    # addr_counter_submodule_tb.vhdl  # Address LED Ouput
+    addr_counter_tb.vhdl            # Address LED Ouput
     addr_output_module_tb.vhdl      # Address LED Ouput
     data_output_module_tb.vhdl      # Data LED Ouput
 )
