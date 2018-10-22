@@ -85,6 +85,7 @@ begin
         assert load_n'stable(T_SC)
             report "/LOAD signal changed during setup time!"
             severity warning;
+            -- severity failure;
 
     end process checkMetaStability;
 

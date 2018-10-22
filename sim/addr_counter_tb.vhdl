@@ -30,13 +30,7 @@ architecture testbench of addr_counter_tb is
 begin
 
     dut : entity work.addr_counter(structure)
-        -- port map ( clk       => sys_clk,
-                   -- clr_n     => clr_n,
-                   -- load_addr => load_addr,
-                   -- next_addr => next_addr,
-                   -- addr_in   => addr_in,
-                   -- addr_out  => addr_out );
-        port map ( counter_in.clk   => sys_clk,
+        port map ( clk              => sys_clk,
                    counter_in.load  => load_addr,
                    counter_in.clr_n => clr_n,
                    counter_in.d     => addr_in,
@@ -50,31 +44,16 @@ begin
     begin
 
         -- wait for 3 clock cycles
-        -- clr_n <= '1';
-        -- wait for 3 * CLK_CYC;
-        -- wait for CLK_CYC / 2;
+        clr_n <= '1';
+        wait for 3 * CLK_CYC;
+        wait for CLK_CYC / 2;
         --
         -- -- load $1f0 address
-        -- addr_in <= B"001_1111_0000";
-        -- load_addr <= '1';
-        -- wait for 2 * CLK_CYC;
-        -- load_addr <= '0';
-        --
-        -- -- count up
-        -- for i in 0 to 20 loop
-        --     wait for 10 ns;
-        --     next_addr <= not next_addr;
-        --     wait for 2 * CLK_CYC - 10 ns;
-        -- end loop;
-        -- next_addr <= '0';
-        --
-        -- -- WARNING: THIS SIGNALS VIOLATE METASTABILITY
-        -- wait for 100 ns;
-        -- clr_n <= '0';
-        -- wait for 98 ns;
-        -- clr_n <= '1';
-        -- wait for 2 * CLK_CYC;
-        -- -- -------------------------------------------
+        -- THIS SOULD VIOLATE SETUP TIME FOR LOAD SIGNAL
+        addr_in <= B"001_1111_0000";
+        load_addr <= '1';
+        wait for  CLK_CYC;
+        load_addr <= '0';
 
         -- wait forever
         finished <= '1';
