@@ -35,6 +35,10 @@ entity sn74ahc74 is
     -- TODO: add detailed timing constants
     constant T_PPC  : delay_length := 9 ns;     -- Propagation delay /PRE or /CLR -> Q
     constant T_P    : delay_length := 8.5 ns;   -- Propagation delay CLK -> Q
+    constant T_W    : delay_length := 5 ns;     -- minimal pulse with for /PRE and /CLR
+    constant T_SUD  : delay_length := 5 ns;     -- data setup time
+    constant T_HD   : delay_length := 0.5 ns;   -- data hold time
+    constant T_SUPC : delay_length := 3 ns;     -- inactive time /PRE and /CLR
 end entity sn74ahc74;
 
 -- rtl architecture to check metastability
@@ -70,9 +74,39 @@ begin
     -- check metastability of latch enable signal
     checkMetaStability : process is
     begin
-        wait;
         -- wait for clk, clear, or preset signal
-        -- wait on c
+        -- wait on clk1, pre1_n, clr1_n;
+        wait until rising_edge(clk1);
+
+        -- check preset signal
+        -- if rising_edge(pre1_n) then
+        --     assert pre1_n'delayed'stable(T_W)
+        --         report "Pulse width on /PRE1 too short!"
+        --         severity warning;
+        -- end if;
+        --
+        -- -- check clear signal
+        -- if rising_edge(clr1_n) then
+        --     assert clr1_n'delayed'stable(T_W)
+        --         report "Pulse width on /CLR1 too short!"
+        --         severity warning;
+        -- end if;
+
+        -- check data setup time
+        assert d1'delayed'stable(T_SUD)
+            report "Data changed during setup time!"
+            severity warning;
+
+        -- check hold time
+        wait for T_HD;
+        assert d1'delayed'stable(T_SUD + T_HD)
+            report "Data changed during hold time!"
+            severity warning;
+
+        wait until falling_edge(clk1);
+        assert clk1'delayed'stable(T_W)
+            report "Clock pulse too short!"
+            severity warning;
 
         -- wait for LE falling edge
         -- wait until falling_edge(le);

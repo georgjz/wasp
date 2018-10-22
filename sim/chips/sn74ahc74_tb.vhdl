@@ -68,7 +68,6 @@ begin
         wait for 3 * CLK_CYC;
 
         -- hold d1 high for 4 cycles
-        -- wait for CLK_CYC / 4;
         wait for 50 ns;
         d1 <= '1';
         wait for 4 * CLK_CYC;
@@ -82,6 +81,24 @@ begin
         wait for CLK_CYC / 2;
         pre1_n <= '1';
         wait for CLK_CYC / 2;
+
+        -- clear
+        clr1_n <= '0';
+        wait for CLK_CYC / 2;
+        clr1_n <= '1';
+        wait for CLK_CYC / 2;
+
+        -- WARNING: THIS SIGNALS VIOLATE METASTABILITY
+        wait until falling_edge(sys_clk);
+        wait for 97 ns;
+        d1 <= '1';      -- violate setup time
+
+        wait until falling_edge(sys_clk);
+        wait for 100.1 ns;
+        d1 <= '0';      -- violate hold time
+
+        wait until rising_edge(sys_clk);
+        -----------------------------------------------
 
         -- wait forever
         finished <= '1';
