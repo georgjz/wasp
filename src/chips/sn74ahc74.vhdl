@@ -8,7 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO:
+-- TODO: Add pulse with check for /PRE and /CLR
 --
 -------------------------------------------------------------------------------
 
@@ -107,25 +107,6 @@ begin
         assert clk1'delayed'stable(T_W)
             report "Clock pulse too short!"
             severity warning;
-
-        -- wait for LE falling edge
-        -- wait until falling_edge(le);
-        --
-        -- --check pulse width
-        -- assert le'delayed'stable(T_W)
-        --     report "LE pulse width too short!"
-        --     severity failure;
-        --
-        -- -- check setup time
-        -- assert intern'delayed'stable(T_SU)
-        --     report "Input changed during setup time!"
-        --     severity failure;
-        --
-        -- -- check hold time
-        -- wait for T_H;
-        -- assert intern'delayed'stable(T_H + T_SU)
-        --     report "Input signal changed during hold time!"
-        --     severity failure;
 
     end process checkMetaStability;
 
