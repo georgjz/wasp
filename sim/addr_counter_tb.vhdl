@@ -46,13 +46,19 @@ begin
         -- wait for 3 clock cycles
         clr_n <= '1';
         wait for 3 * CLK_CYC;
-        wait for CLK_CYC / 2;
+        addr_in <= B"001_1111_0000";
+        wait for CLK_CYC;
+        -- wait for CLK_CYC / 2;
         --
         -- -- load $1f0 address
         -- THIS SOULD VIOLATE SETUP TIME FOR LOAD SIGNAL
-        addr_in <= B"001_1111_0000";
+        wait for 1 ns;
         load_addr <= '1';
-        wait for  CLK_CYC;
+        wait for CLK_CYC/2 - 4 ns;
+        addr_in <= B"001_1111_0000";
+        load_addr <= '0';
+        -- wait for  CLK_CYC;
+        wait until falling_edge(sys_clk);
         load_addr <= '0';
 
         -- wait forever
@@ -61,6 +67,5 @@ begin
         wait;
 
     end process stimulus;
-
 
 end architecture testbench;
