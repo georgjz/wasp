@@ -60,6 +60,15 @@ begin
         -- wait for  CLK_CYC;
         wait until falling_edge(sys_clk);
         load_addr <= '0';
+        -- violate data setup
+        wait for CLK_CYC/4;
+        load_addr <= '1';
+        wait for CLK_CYC/4 - 3 ns;
+        addr_in <= B"001_1111_1111";
+        wait for CLK_CYC/4;
+        load_addr <= '0';
+        addr_in <= B"000_0000_0000";
+        wait for CLK_CYC/4;
 
         -- wait forever
         finished <= '1';

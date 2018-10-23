@@ -107,5 +107,4 @@ begin
 
     end process stimulus;
 
-
 end architecture testbench;
