@@ -9,4 +9,5 @@ add_sources(
     data_output_module.vhdl         # Data LED Ouput
     # switch_input_module.vhdl        # Data LED Ouput
     wasp_records_pkg.vhdl           # Data LED Ouput
+    syncer.vhdl                     # signal-clock syncer
 )

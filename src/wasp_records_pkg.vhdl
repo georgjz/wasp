@@ -37,11 +37,15 @@ package wasp_records_pkg is
 
     -- interface for address counter module
     type t_addr_counter is record
-        -- clk         : std_logic;        -- system clock input
         load        : std_logic;        -- signal to load new address/data from input
         clr_n       : std_logic;        -- clear the counter to zero
         -- control_in  : t_control_panel;
         d           : std_logic_vector; -- address/data input
     end record t_addr_counter;
+
+    type t_syncer is record
+        d : std_logic;                  -- syncer input
+        -- q : std_logic;                  -- syncer output
+    end record t_syncer;
 
 end package wasp_records_pkg;

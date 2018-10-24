@@ -21,7 +21,7 @@ use work.wasp_records_pkg.all;
 entity addr_counter is
     generic ( constant ADDR_WIDTH : integer := 11);
     port    ( clk        : in std_logic;
-              counter_in : in t_addr_counter ( d(ADDR_WIDTH -1 downto 0) );
+              counter_in : in t_addr_counter ( d(ADDR_WIDTH - 1 downto 0) );
               addr_out   : out std_logic_vector (ADDR_WIDTH - 1 downto 0) );  -- signals to display on LEDs
 end entity addr_counter;
 
