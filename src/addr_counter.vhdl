@@ -8,7 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO:
+-- TODO: Implement proper address wrap around
 --
 -------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ end entity addr_counter;
 -- structural architecture
 architecture structure of addr_counter is
     -- additional/auxiliar control signals
-    signal load_inv : std_logic := 'X';    -- inverted load_addr signal
+    signal load_inv    : std_logic := 'X';    -- inverted load_addr signal
     -- internal signals
     signal rco_ct0_ct1 : std_logic := 'X';  -- RCO signal from counter0 to counter1
     signal rco_ct1_ct2 : std_logic := 'X';  -- RCO signal from counter1 to counter2

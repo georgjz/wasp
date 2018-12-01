@@ -28,10 +28,10 @@ package wasp_records_pkg is
     -- switch panel input
     type t_switch_panel is record
         switch_input  : std_logic_vector;
-        control_input : t_control_panel;
+        -- control_input : t_control_panel;
         -- deposit      : std_logic;
         -- deposit_next : std_logic;
-        -- examine      : std_logic;
+        examine      : std_logic;
         -- examine_next : std_logic;
     end record t_switch_panel;
 
