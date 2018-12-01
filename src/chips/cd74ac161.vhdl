@@ -44,12 +44,10 @@ architecture rtl of cd74ac161 is
 begin
 
     -- clear or preset counter
-    intern <= (others => '0')
-                    when clr_n = '0' else
-              d
-                    when load_n = '0' else
-              std_logic_vector(unsigned(intern) + 1)
-                    when (rising_edge(clk) and enp = '1' and ent = '1');
+    intern <=
+    (others => '0')                         when clr_n = '0' else
+    d                                       when load_n = '0' and rising_edge(clk) else
+    std_logic_vector(unsigned(intern) + 1)  when (rising_edge(clk) and enp = '1' and ent = '1');
 
     -- update RCO
     rco <= '1' after T_PD when (intern = X"f" and ent = '1') else '0' after T_PD;
@@ -85,6 +83,7 @@ begin
         assert load_n'stable(T_SC)
             report "/LOAD signal changed during setup time!"
             severity warning;
+            -- severity failure;
 
     end process checkMetaStability;
 

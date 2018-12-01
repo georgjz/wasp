@@ -45,7 +45,6 @@ begin
 
     -- update output
     q <= intern after T_PD when oe_n = '0' else
-         -- "ZZZZZZZZ" after T_PD;
          (others => 'Z') after T_PD;
 
     -- TODO: replace with state machine for more precise propagation delays
