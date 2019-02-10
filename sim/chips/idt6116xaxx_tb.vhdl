@@ -66,6 +66,7 @@ begin
         oe_n <= '0';
         we_n <= '1';
         addr_in <= B"000_0000_0000";
+        
         -- PROVOKE BUS CONFLICT
         data_in <= X"ad";
         wait for 100 ns;
