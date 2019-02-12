@@ -61,15 +61,11 @@ begin
                    led_out => addr_leds );
 
     -- "glue logic"
-    -- cs_n <= '0' when (read_data = '1' or write_data = '1') else
-            -- '1';
     cs_n <= not (read_data or write_data);
     we_n <= not write_data;
     oe_n <= not read_data;
-    ld   <= '1' when (read_data = '1' or write_data = '1') else
-            '0';
-    la   <= '1' when (read_data = '1' or write_data = '1') else
-            '0';
+    ld   <= (read_data or write_data);
+    la   <= (read_data or write_data);
 
     -- connect inputs to data and address bus
     data_bus <= data_input;
