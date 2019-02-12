@@ -19,33 +19,11 @@ use ieee.numeric_std.all;
 
 package wasp_records_pkg is
 
-    -- input of control switches
-    type t_control_panel is record
-        deposit     : std_logic;
-        examine     : std_logic;
-    end record t_control_panel;
-
-    -- switch panel input
-    type t_switch_panel is record
-        switch_input  : std_logic_vector;
-        -- control_input : t_control_panel;
-        -- deposit      : std_logic;
-        -- deposit_next : std_logic;
-        examine      : std_logic;
-        -- examine_next : std_logic;
-    end record t_switch_panel;
-
-    -- interface for address counter module
-    type t_addr_counter is record
-        load        : std_logic;        -- signal to load new address/data from input
-        clr_n       : std_logic;        -- clear the counter to zero
-        -- control_in  : t_control_panel;
-        d           : std_logic_vector; -- address/data input
-    end record t_addr_counter;
-
-    type t_syncer is record
-        d : std_logic;                  -- syncer input
-        -- q : std_logic;                  -- syncer output
-    end record t_syncer;
+    -- interface for output modules
+    type t_output_module is record
+        latch       : std_logic;
+        addr_in     : std_logic_vector;
+        led_out     : std_logic_vector;
+    end record t_output_module;
 
 end package wasp_records_pkg;

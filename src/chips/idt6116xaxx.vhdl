@@ -3,12 +3,12 @@
 -- unit name: IDT6116xAxx 2K x 8 SRAM type memory chip
 -- author: Georg Ziegler
 --
--- description: A 2K x 8 static RAM chip with 8-bit data, and 12-bit address bus
+-- description: A 2K x 8 static RAM chip with 8-bit data, and 11-bit address bus
 --
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO: Add metastability check process
+-- TODO: Add metastability check process and correct timing constrains
 --
 -------------------------------------------------------------------------------
 
@@ -33,21 +33,22 @@ architecture rtl of idt6116xaxx is
 -- internal signals
     constant RAM_DEPTH : integer := 2**ADDR_WIDTH;
 
-    signal data_out : std_logic_vector (DATA_WIDTH - 1 downto 0);
+    -- signal data_out : std_logic_vector (DATA_WIDTH - 1 downto 0);
+    signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0);
 
     type RAM is array (integer range <>) of std_logic_vector (DATA_WIDTH - 1 downto 0);
     signal mem : RAM (0 to RAM_DEPTH - 1);
 begin
 
     -- Tri-State Buffer control
-    data <= data_out when (cs_n = '0' and oe_n = '0' and we_n = '1') else
+    data <= intern when (cs_n = '0' and oe_n = '0' and we_n = '1') else
             (others => 'Z');
 
     -- Memory Read Block
     readFromMemory : process (addr, cs_n, oe_n, we_n, mem) is
     begin
         if (cs_n = '0' and oe_n = '0' and we_n = '1') then
-            data_out <= mem(to_integer(unsigned(addr)));
+            intern <= mem(to_integer(unsigned(addr)));
         end if;
     end process;
 
@@ -64,5 +65,5 @@ begin
     -- begin
         -- code
     -- end process checkMetaStability;
-    
+
 end architecture rtl;
