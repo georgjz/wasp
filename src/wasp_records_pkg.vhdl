@@ -15,14 +15,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
--- use work.wasp_records_pkg.all;
 
 package wasp_records_pkg is
 
     -- interface for output modules
     type t_to_output_module is record
         latch       : std_logic;
-        -- addr_in     : std_logic_vector;
         data_in     : std_logic_vector;
     end record t_to_output_module;
 
