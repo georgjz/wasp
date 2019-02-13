@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity data_output_module_tb is
@@ -27,9 +28,9 @@ architecture testbench of data_output_module_tb is
 begin
 
     dut : entity work.data_output_module(structure)
-        port map ( latch => latch_data_output,
-                   data_in => data_in,
-                   led_out => led_out );
+        port map ( input.latch => latch_data_output,
+                   input.data_in => data_in,
+                   output.led_out => led_out );
 
     stimulus : process is
     begin

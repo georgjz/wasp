@@ -27,9 +27,9 @@ architecture testbench of addr_output_module_tb is
 begin
 
     dut : entity work.addr_output_module(structure)
-        port map ( latch => latch_addr_output,
-                   addr_in => addr_in,
-                   led_out => led_out );
+        port map ( input.latch => latch_addr_output,
+                   input.data_in => addr_in,
+                   output.led_out => led_out );
 
     stimulus : process is
     begin

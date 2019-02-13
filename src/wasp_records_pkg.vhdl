@@ -20,10 +20,14 @@ use ieee.numeric_std.all;
 package wasp_records_pkg is
 
     -- interface for output modules
-    type t_output_module is record
+    type t_to_output_module is record
         latch       : std_logic;
-        addr_in     : std_logic_vector;
+        -- addr_in     : std_logic_vector;
+        data_in     : std_logic_vector;
+    end record t_to_output_module;
+
+    type t_from_output_module is record
         led_out     : std_logic_vector;
-    end record t_output_module;
+    end record t_from_output_module;
 
 end package wasp_records_pkg;

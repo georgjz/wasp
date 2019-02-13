@@ -50,15 +50,15 @@ begin
 
     -- data output
     dataled : entity work.data_output_module(structure)
-        port map ( latch => ld,
-                   data_in => data_bus,
-                   led_out => data_leds );
+        port map ( input.latch => ld,
+                   input.data_in => data_bus,
+                   output.led_out => data_leds );
 
     -- address output
     addrled : entity work.addr_output_module(structure)
-        port map ( latch => la,
-                   addr_in => addr_bus,
-                   led_out => addr_leds );
+        port map ( input.latch => la,
+                   input.data_in => addr_bus,
+                   output.led_out => addr_leds );
 
     -- "glue logic"
     cs_n <= not (read_data or write_data);
