@@ -8,9 +8,7 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO: Fix latching during high-Z output
--- Expand input/output to 8-bit/octal
--- Model initial state of latch correctly
+-- TODO: Model initial state of latch correctly
 --
 -------------------------------------------------------------------------------
 
@@ -47,8 +45,6 @@ begin
     q <= intern after T_PD when oe_n = '0' else
          (others => 'Z') after T_PD;
 
-    -- TODO: replace with state machine for more precise propagation delays
-
     -- check metastability of latch enable signal
     checkMetaStability : process is
     begin
@@ -58,18 +54,21 @@ begin
         --check pulse width
         assert le'delayed'stable(T_W)
             report "LE pulse width too short!"
-            severity failure;
+            -- severity failure;
+            severity warning;
 
         -- check setup time
         assert intern'delayed'stable(T_SU)
             report "Input changed during setup time!"
-            severity failure;
+            -- severity failure;
+            severity warning;
 
         -- check hold time
         wait for T_H;
         assert intern'delayed'stable(T_H + T_SU)
             report "Input signal changed during hold time!"
-            severity failure;
+            -- severity failure;
+            severity warning;
 
     end process checkMetaStability;
 

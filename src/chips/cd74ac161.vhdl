@@ -31,7 +31,7 @@ entity cd74ac161 is
               q      : out std_logic_vector (DATA_WIDTH - 1 downto 0) );
 
     -- TODO: add detailed timing constants
-    constant T_PD   : delay_length := 16 ns;    -- Propagation delay
+    constant T_PD   : delay_length := 15.2 ns;    -- Propagation delay
     constant T_PW   : delay_length := 4.8 ns;   -- minium clock pulse width
     constant T_SUA  : delay_length := 4.4 ns;   -- setup time for data input
     constant T_SC   : delay_length := 5.3 ns;   -- setup/recovery time load/clear

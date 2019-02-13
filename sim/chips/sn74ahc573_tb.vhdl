@@ -51,21 +51,20 @@ begin
 
         -- WARNING: These signal changes violate metastability
             -- violate minimal pulse width
-        -- le <= '0'; wait for 1 ns;
-        -- oe_n <= '0'; le <= '1'; d <= '1'; wait for 4 ns;
-        -- le <= '0'; wait for 11 ns;
+        le <= '0'; wait for 1 ns;
+        oe_n <= '0'; le <= '1'; d <= (others => '1'); wait for 4 ns;
+        le <= '0'; wait for 11 ns;
             -- violate setup time
-        -- oe_n <= '0'; le <= '1'; d <= '1'; wait for 4 ns;
-        -- d <= '0';  wait for 1 ns;
-        -- le <= '0'; wait for 10 ns;
+        oe_n <= '0'; le <= '1'; d <= (others => '1'); wait for 4 ns;
+        d <= (others => '0');  wait for 1 ns;
+        le <= '0'; wait for 10 ns;
             -- violate hold time
-        -- oe_n <= '0'; le <= '1'; d <= '1'; wait for 4 ns;
-        -- wait for 1 ns; le <= '0'; d <= '0' after 1 ns;
+        oe_n <= '0'; le <= '1'; d <= (others => '1'); wait for 4 ns;
+        wait for 1 ns; le <= '0'; d <= (others => '0') after 1 ns;
 
         -- wait forever
         wait;
 
     end process stimulus;
-
 
 end architecture testbench;
