@@ -4,7 +4,7 @@
 -- author: Georg Ziegler
 --
 -- description: This module represents the Address Buffer. It decouples the
--- a bus from another.
+-- input bus from another.
 --
 -- dependencies: ieee library
 --

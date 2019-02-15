@@ -20,7 +20,6 @@ use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity control_signal_generator is
-    generic ( constant DATA_WIDTH : integer := 8);
     port    ( input  : in  t_to_control_signal_generator;
               output : out t_from_control_signal_generator );
 end entity control_signal_generator;
