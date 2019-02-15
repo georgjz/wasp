@@ -54,20 +54,17 @@ begin
         --check pulse width
         assert le'delayed'stable(T_W)
             report "LE pulse width too short!"
-            -- severity failure;
             severity warning;
 
         -- check setup time
         assert intern'delayed'stable(T_SU)
             report "Input changed during setup time!"
-            -- severity failure;
             severity warning;
 
         -- check hold time
         wait for T_H;
         assert intern'delayed'stable(T_H + T_SU)
             report "Input signal changed during hold time!"
-            -- severity failure;
             severity warning;
 
     end process checkMetaStability;

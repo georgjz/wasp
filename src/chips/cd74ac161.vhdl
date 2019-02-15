@@ -67,23 +67,19 @@ begin
             severity warning;
 
         -- check clk recovery time
-        -- assert clr_n'delayed'stable(T_SC)
         assert clr_n'stable(T_SC)
             report "/CLEAR changed during recovery time!"
             severity warning;
 
         -- check data setup time
-        -- assert d'delayed'stable(T_SUA)
         assert d'stable(T_SUA)
             report "Data input changed during setup time!"
             severity warning;
 
         -- check load signal setup time
-        -- assert load_n'delayed'stable(T_SC)
         assert load_n'stable(T_SC)
             report "/LOAD signal changed during setup time!"
             severity warning;
-            -- severity failure;
 
     end process checkMetaStability;
 
