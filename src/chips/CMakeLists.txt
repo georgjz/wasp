@@ -2,8 +2,9 @@
 add_sources(
     cd74ac161.vhdl      # 4-bit binary counter
     sn74ahc00.vhdl      # quad 2-input NAND
+    sn74ahc04.vhdl      # hex NOT 
     sn74ahc08.vhdl      # quad 2-input AND
-    sn74ahc32.vhdl      # quad 2-input OR 
+    sn74ahc32.vhdl      # quad 2-input OR
     sn74ahc74.vhdl      # dual d-flip-flop
     sn74ahc244.vhdl     # octal buffer/driver
     sn74ahc573.vhdl     # octal d-type transparent latch
