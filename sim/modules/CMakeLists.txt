@@ -7,4 +7,5 @@ add_test_sources(
     addr_output_module_tb.vhdl          # Address LED Ouput
     control_signal_generator_tb.vhdl    # Control Signal Generator
     data_output_module_tb.vhdl          # Data LED Ouput
+    data_pulse_generator_tb.vhdl        # Data LED Ouput
 )
