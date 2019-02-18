@@ -44,9 +44,9 @@ begin
     ram : entity work.idt6116xaxx(rtl)
         port map ( data => data_bus,
                    addr => addr_bus,
-                   cs_n => cs_n,
-                   we_n => we_n,
-                   oe_n => oe_n );
+                   ctrl.cs_n => cs_n,
+                   ctrl.we_n => we_n,
+                   ctrl.oe_n => oe_n );
 
     -- data output
     dataled : entity work.data_output_module(structure)

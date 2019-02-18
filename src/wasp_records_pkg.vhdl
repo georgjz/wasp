@@ -18,6 +18,13 @@ use ieee.numeric_std.all;
 
 package wasp_records_pkg is
 
+    -- control signals for RAM
+    type t_ram_ctrl is record
+        cs_n        : std_logic;
+        we_n        : std_logic;
+        oe_n        : std_logic;
+    end record t_ram_ctrl;
+
     -- interface for output modules
     type t_to_output_module is record
         latch       : std_logic;
@@ -49,9 +56,7 @@ package wasp_records_pkg is
         set_addr    : std_logic;
         inc_addr    : std_logic;
         buffer_ctrl : std_logic;
-        ram_cs_n    : std_logic;
-        ram_we_n    : std_logic;
-        ram_oe_n    : std_logic;
+        ram_ctrl    : t_ram_ctrl;
         addr_output : std_logic;
     end record t_from_control_signal_generator;
 

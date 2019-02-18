@@ -22,7 +22,7 @@ use work.wasp_records_pkg.all;
 entity control_signal_generator is
     port    ( input  : in  t_to_control_signal_generator;
               output : out t_from_control_signal_generator );
-              
+
     -- timing characteristics
     constant T_PD : delay_length := 15 ns;
 end entity control_signal_generator;
@@ -40,9 +40,9 @@ begin
     output.buffer_ctrl <= input.examine nor input.examine_next after T_PD;
 
     -- RAM control signals
-    output.ram_cs_n <= input.examine nor input.examine_next after T_PD;
-    output.ram_we_n <= PULLUP;
-    output.ram_oe_n <= input.examine nor input.examine_next after T_PD;
+    output.ram_ctrl.cs_n <= input.examine nor input.examine_next after T_PD;
+    output.ram_ctrl.we_n <= PULLUP;
+    output.ram_ctrl.oe_n <= input.examine nor input.examine_next after T_PD;
 
     -- Address output module control signal
     output.addr_output <= input.examine xor input.examine_next after T_PD;

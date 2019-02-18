@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity idt6116xaxx is
@@ -22,39 +23,35 @@ entity idt6116xaxx is
               constant ADDR_WIDTH : integer := 11 );
     port    ( data  : inout std_logic_vector (DATA_WIDTH - 1 downto 0);
               addr  : in    std_logic_vector (ADDR_WIDTH - 1 downto 0);
-              cs_n  : in    std_logic;
-              we_n  : in    std_logic;
-              oe_n  : in    std_logic );
+              ctrl  : in    t_ram_ctrl );
 end entity idt6116xaxx;
 
 -- rtl architecture with metastability and timing checks
 architecture rtl of idt6116xaxx is
--- internal signals
+    -- internal signals
     constant RAM_DEPTH : integer := 2**ADDR_WIDTH;
-
-    -- signal data_out : std_logic_vector (DATA_WIDTH - 1 downto 0);
     signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0);
-
+    -- the memory itself
     type RAM is array (integer range <>) of std_logic_vector (DATA_WIDTH - 1 downto 0);
     signal mem : RAM (0 to RAM_DEPTH - 1);
 begin
 
     -- Tri-State Buffer control
-    data <= intern when (cs_n = '0' and oe_n = '0' and we_n = '1') else
+    data <= intern when (ctrl.cs_n = '0' and ctrl.oe_n = '0' and ctrl.we_n = '1') else
             (others => 'Z');
 
     -- Memory Read Block
-    readFromMemory : process (addr, cs_n, oe_n, we_n, mem) is
+    readFromMemory : process (addr, ctrl.cs_n, ctrl.oe_n, ctrl.we_n, mem) is
     begin
-        if (cs_n = '0' and oe_n = '0' and we_n = '1') then
+        if (ctrl.cs_n = '0' and ctrl.oe_n = '0' and ctrl.we_n = '1') then
             intern <= mem(to_integer(unsigned(addr)));
         end if;
     end process;
 
     -- Memory Write Block
-    writeToMemory : process (addr, data, cs_n, we_n) is
+    writeToMemory : process (addr, data, ctrl.cs_n, ctrl.we_n) is
     begin
-        if (cs_n = '0' and we_n = '0') then
+        if (ctrl.cs_n = '0' and ctrl.we_n = '0') then
             mem(to_integer(unsigned(addr))) <= data;
         end if;
     end process;

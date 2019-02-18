@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity idt6116xaxx_tb is
@@ -31,9 +32,9 @@ begin
     dut : entity work.idt6116xaxx(rtl)
         port map ( data => data_in,
                    addr => addr_in,
-                   cs_n => cs_n,
-                   we_n => we_n,
-                   oe_n => oe_n );
+                   ctrl.cs_n => cs_n,
+                   ctrl.we_n => we_n,
+                   ctrl.oe_n => oe_n );
 
     -- code
     stimulus : process is
@@ -66,7 +67,7 @@ begin
         oe_n <= '0';
         we_n <= '1';
         addr_in <= B"000_0000_0000";
-        
+
         -- PROVOKE BUS CONFLICT
         data_in <= X"ad";
         wait for 100 ns;
