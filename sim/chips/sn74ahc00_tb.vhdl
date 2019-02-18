@@ -3,7 +3,7 @@
 -- unit name: Test Bench for the SN74AHC00 Quad 2-Input NAND
 -- author: Georg Ziegler
 --
--- description: Generates test signals for the four 2-input NAND gates
+-- description: This testbench verfies functionality of the sn74ahc00 unit
 --
 -- dependencies: ieee library
 --

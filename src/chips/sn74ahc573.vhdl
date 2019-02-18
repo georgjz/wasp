@@ -36,7 +36,6 @@ architecture rtl of sn74ahc573 is
     signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => 'X');
 begin
 
-    -- concurrent replacement of behavioral process
     -- latch the input according LE state
     intern <= d when le = '1' else
               unaffected;

@@ -22,6 +22,10 @@ entity addr_counter is
     generic ( constant ADDR_WIDTH : integer := 11);
     port    ( input  : in  t_to_address_counter ( addr_in(ADDR_WIDTH - 1 downto 0));         -- latch the new address to output
               output : out t_from_address_counter ( addr_out(ADDR_WIDTH - 1 downto 0)) );
+              
+    -- constants
+    constant PULLUP : std_logic := '1';       -- represents pull-up/constant high
+    constant GND    : std_logic := '0';       -- represents ground/constant low
 end entity addr_counter;
 
 -- structural architecture
@@ -33,9 +37,6 @@ architecture structure of addr_counter is
     signal clk_1    : std_logic;        -- clk signal to counter 1
     signal clk_2    : std_logic;        -- clk signal to counter 2
     signal load_n   : std_logic;        -- inverted set signal
-    -- constants
-    constant PULLUP : std_logic := '1';       -- represents pull-up/constant high
-    constant GND    : std_logic := '0';       -- represents ground/constant low
 begin
 
     counter2 : entity work.cd74ac161(rtl)

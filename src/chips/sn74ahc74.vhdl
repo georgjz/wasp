@@ -10,6 +10,7 @@
 -------------------------------------------------------------------------------
 -- TODO: Add pulse with check for /PRE and /CLR
 -- Make input/output port into package
+-- Add metastability check for second latch
 --
 -------------------------------------------------------------------------------
 
@@ -19,7 +20,6 @@ use ieee.numeric_std.all;
 
 -- entity declaration
 entity sn74ahc74 is
-    -- generic ( constant DATA_WIDTH : integer := 8 );
     port ( clk1   : in std_logic;       -- clk input
            pre1_n : in std_logic;       -- preset dff
            clr1_n : in std_logic;       -- reset dff
@@ -66,7 +66,7 @@ begin
     q1   <= intern1;
     q1_n <= not intern1;
 
-    -- update output 1
+    -- update output 2
     q2   <= intern2;
     q2_n <= not intern2;
 
@@ -75,23 +75,8 @@ begin
     -- check metastability of latch enable signal
     checkMetaStability : process is
     begin
-        -- wait for clk, clear, or preset signal
-        -- wait on clk1, pre1_n, clr1_n;
+        -- wait for rising clock edge
         wait until rising_edge(clk1);
-
-        -- check preset signal
-        -- if rising_edge(pre1_n) then
-        --     assert pre1_n'delayed'stable(T_W)
-        --         report "Pulse width on /PRE1 too short!"
-        --         severity warning;
-        -- end if;
-        --
-        -- -- check clear signal
-        -- if rising_edge(clr1_n) then
-        --     assert clr1_n'delayed'stable(T_W)
-        --         report "Pulse width on /CLR1 too short!"
-        --         severity warning;
-        -- end if;
 
         -- check data setup time
         assert d1'delayed'stable(T_SUD)

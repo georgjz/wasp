@@ -22,12 +22,14 @@ use work.wasp_records_pkg.all;
 entity control_signal_generator is
     port    ( input  : in  t_to_control_signal_generator;
               output : out t_from_control_signal_generator );
+              
+    -- timing characteristics
+    constant T_PD : delay_length := 15 ns;
 end entity control_signal_generator;
 
 -- structural architecture
 architecture structure of control_signal_generator is
     constant PULLUP : std_logic := '1';
-    constant T_PD : delay_length := 15 ns;
 begin
 
     -- address counter control signals

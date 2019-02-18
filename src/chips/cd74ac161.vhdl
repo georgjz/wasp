@@ -40,7 +40,6 @@ end entity cd74ac161;
 -- rtl architecture to check metastability
 architecture rtl of cd74ac161 is
     signal intern : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => 'X');
-    -- variable count : unsigned (3 downto 0);
 begin
 
     -- clear or preset counter

@@ -23,14 +23,15 @@ entity addr_buffer is
     generic ( constant ADDR_WIDTH : integer := 11);
     port    ( input  : in  t_to_buffer (data_in(ADDR_WIDTH - 1 downto 0));
               output : out t_from_buffer (data_out(ADDR_WIDTH - 1 downto 0)) );
+              
+    -- timing characteristics
+    constant T_PD : delay_length := 15 ns;
 end entity addr_buffer;
 
 -- structural architecture
 architecture structure of addr_buffer is
     -- internal signal
     signal intern : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-    -- timing characteristics
-    constant T_PD : delay_length := 15 ns;
 begin
 
     -- high-impedance control
