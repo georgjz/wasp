@@ -2,6 +2,7 @@
 add_test_sources(
     cd74ac161_tb.vhdl
     sn74ahc00_tb.vhdl
+    sn74ahc04_tb.vhdl
     sn74ahc08_tb.vhdl
     sn74ahc32_tb.vhdl
     sn74ahc74_tb.vhdl
