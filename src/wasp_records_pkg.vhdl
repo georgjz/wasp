@@ -108,4 +108,14 @@ package wasp_records_pkg is
         y6          : std_logic;
     end record t_from_hex_one_input_logic;
 
+    -- interface for a pulse generator
+    type t_to_pulse_generator is record
+        clk         : std_logic;
+        signal_in   : std_logic;
+    end record t_to_pulse_generator;
+
+    type t_from_pulse_generator is record
+        signal_out  : std_logic;
+    end record t_from_pulse_generator;
+    
 end package wasp_records_pkg;
