@@ -15,13 +15,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity data_output_module is
     generic ( constant DATA_WIDTH : integer := 8);
-    port    ( latch   : in std_logic;         -- latch the new address to output
-              data_in : in std_logic_vector (DATA_WIDTH - 1 downto 0);     -- address to latch to LEDs
-              led_out : out std_logic_vector (DATA_WIDTH - 1 downto 0) );  -- signals to display on LEDs
+    port    ( input  : in  t_to_output_module ( data_in(DATA_WIDTH - 1 downto 0));         -- latch the new address to output
+              output : out t_from_output_module ( led_out(DATA_WIDTH - 1 downto 0)) );
 end entity data_output_module;
 
 -- structural architecture
@@ -31,8 +31,8 @@ begin
 
     dlatch0 : entity work.sn74ahc573(rtl)
         port map ( oe_n => GND,                     -- output constantly enabled
-                   le   => latch,                   -- will latch the new address
-                   d    => data_in,
-                   q    => led_out );
+                   le   => input.latch,                   -- will latch the new address
+                   d    => input.data_in,
+                   q    => output.led_out );
 
 end architecture structure;

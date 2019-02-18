@@ -62,7 +62,7 @@ begin
         -- write $fe to $020
         write_data <= '1';
         -- "manually" put the data and address on their respective buses
-        data_input <= X"c0";
+        data_input <= X"fe";
         addr_input <= B"000_0010_0000";
         wait for 100 ns;
 
