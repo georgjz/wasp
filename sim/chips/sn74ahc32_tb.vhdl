@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Test Bench for the SN74AHC08 Quad 2-Input AND
+-- unit name: Test Bench for the SN74AHC32 Quad 2-Input OR
 -- author: Georg Ziegler
 --
--- description: This testbench verfies functionality of the sn74ahc08 unit
+-- description: This testbench verfies functionality of the sn74ahc32 unit
 --
 -- dependencies: ieee library
 --
@@ -18,18 +18,18 @@ use ieee.numeric_std.all;
 use work.wasp_records_pkg.all;
 
 -- entity declaration
-entity sn74ahc08_tb is
-end entity sn74ahc08_tb;
+entity sn74ahc32_tb is
+end entity sn74ahc32_tb;
 
 -- test bench architecture
-architecture testbench of sn74ahc08_tb is
+architecture testbench of sn74ahc32_tb is
     -- test signals
     signal input  : t_to_quad_two_input_logic;
     signal output : t_from_quad_two_input_logic;
 begin
 
     -- device under test
-    dut : entity work.sn74ahc08(rtl)
+    dut : entity work.sn74ahc32(rtl)
         port map ( input => input,
                    output => output );
 
