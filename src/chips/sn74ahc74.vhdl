@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 --
--- unit name: SN74AHC74 Dual D-Flop-Flop (sn74ahc74)
+-- unit name: SN74AHC74 Dual D-Flip-Flop (sn74ahc74)
 -- author: Georg Ziegler
 --
 -- description: A dual D-flip-flop, presettable and sync'd

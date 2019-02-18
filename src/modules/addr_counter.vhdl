@@ -38,33 +38,24 @@ architecture structure of addr_counter is
     constant GND    : std_logic := '0';       -- represents ground/constant low
 begin
 
-    -- dlatch1 : entity work.sn74ahc573(rtl)
-    --     port map ( oe_n => GND,                     -- output constantly enabled
-    --                le   => input.latch,                   -- will latch the new address
-    --                d(7 downto 3) => (7 downto 3 => GND),
-    --                d(2 downto 0) => input.data_in(ADDR_WIDTH - 1 downto 8),
-    --                q(2 downto 0) => output.led_out(ADDR_WIDTH - 1 downto 8) );
-
     counter2 : entity work.cd74ac161(rtl)
         port map ( clk           => clk_2,
                    clr_n         => PULLUP,
                    load_n        => load_n,
-                   -- enp   => PULLUP,
-                   enp           => rco_c1_to_c2,
-                   ent           => input.inc,
+                   enp           => PULLUP,
+                   ent           => rco_c1_to_c2,
                    rco           => open,
                    d(3)          => GND,
                    d(2 downto 0) => input.addr_in(ADDR_WIDTH - 1 downto 8),
-                   -- q(3)          => open,
+                   -- q(3)          => GND,
                    q(2 downto 0) => output.addr_out(ADDR_WIDTH - 1 downto 8) );
 
     counter1 : entity work.cd74ac161(rtl)
         port map ( clk    => clk_1,
                    clr_n  => PULLUP,
                    load_n => load_n,
-                   -- enp   => PULLUP,
-                   enp    => rco_c0_to_c1,
-                   ent    => input.inc,
+                   enp    => PULLUP,
+                   ent    => rco_c0_to_c1,
                    rco    => rco_c1_to_c2,
                    d      => input.addr_in(7 downto 4),
                    q      => output.addr_out(7 downto 4) );
@@ -84,5 +75,6 @@ begin
     clk_1 <= input.set or input.inc;
     clk_2 <= input.set or input.inc;
     load_n <= not input.set;
+
 
 end architecture structure;

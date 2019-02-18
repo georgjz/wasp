@@ -47,7 +47,8 @@ begin
 
         -- set address to $1ab
         input.set <= '1';
-        input.addr_in <= B"001_0110_0111";
+        input.addr_in <= B"001_1110_1110";
+        -- input.addr_in <= B"001_1110_1110";
         wait for 100 ns;
 
         input.set <= '0';
