@@ -8,5 +8,4 @@ add_test_sources(
     control_signal_generator_tb.vhdl    # Control Signal Generator
     data_output_module_tb.vhdl          # Data LED Ouput
     pulse_generator_positive_tb.vhdl        # Data LED Ouput
-    pulse_generator_negative_tb.vhdl        # Data LED Ouput
 )
