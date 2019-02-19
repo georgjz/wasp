@@ -1,5 +1,6 @@
 # add test sources
 add_test_sources(
+    cd74ac112_tb.vhdl
     cd74ac161_tb.vhdl
     sn74ahc00_tb.vhdl
     sn74ahc04_tb.vhdl
