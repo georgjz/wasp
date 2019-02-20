@@ -33,71 +33,71 @@ end entity pulse_generator;
 -- structural architecture
 architecture structure of pulse_generator is
     -- internal signals
-    signal A   : std_logic;    -- dlatch A
-    signal A_n : std_logic;    -- dlatch A inverted
-    signal B   : std_logic;    -- dlatch A
-    signal B_n : std_logic;    -- dlatch A inverted
+    signal A   : std_logic;    -- JK-flip-flop A
+    signal A_n : std_logic;    -- JK-flip-flop A inverted
+    signal B   : std_logic;    -- JK-flip-flop A
+    signal B_n : std_logic;    -- JK-flip-flop A inverted
 
-    signal A_and_B          : std_logic;
-    signal An_and_Bn        : std_logic;
-    signal A_and_B_or_In    : std_logic;
-    signal An_and_Bn_and_In : std_logic;
+    signal A_n_and_In   : std_logic;
+    signal B_and_In     : std_logic;
+    signal In_n         : std_logic;
 
-    signal An_and_B         : std_logic;
+    signal A_n_and_B    : std_logic;
 
-    signal open_dummy       : std_logic;
+    -- signal open_dummy       : std_logic;
 begin
 
-    Dff : entity work.sn74ahc74(rtl)
-        port map ( clk1        => input.clk,
-                   pre1_n       => PULLUP,
-                   clr1_n       => PULLUP,
-                   d1           => A_and_B_or_In,
-                   q1           => A,
-                   q1_n         => A_n,
-                   -- B Dff
-                   clk2        => input.clk,
-                   pre2_n       => PULLUP,
-                   clr2_n       => PULLUP,
-                   d2           => An_and_Bn_and_In,
-                   q2           => B,
-                   q2_n         => B_n );
+    JK : entity work.cd74ac112(rtl)
+        port map ( -- JK A
+                   clk1    => input.clk,
+                   pre1_n  => PULLUP,
+                   clr1_n  => PULLUP,
+                   j1      => B_and_In,
+                   k1      => In_n,
+                   q1      => A,
+                   q1_n    => A_n,
+                   -- JK B
+                   clk2    => input.clk,
+                   pre2_n  => PULLUP,
+                   clr2_n  => PULLUP,
+                   j2      => A_n_and_In,
+                   k2      => PULLUP,
+                   q2      => B,
+                   q2_n    => B_n );
 
     AndChip : entity work.sn74ahc08(rtl)
-        port map ( input.a1     => A,
-                   input.b1     => B,
-                   -- output.y1    => A_and_B,
-                   input.a2     => A_n,
-                   input.b2     => B_n,
-                   -- output.y2    => An_and_Bn,
-                   input.a3     => An_and_Bn,
-                   input.b3     => input.signal_in,
-                   -- output.y3    => An_and_Bn_and_In,
-                   input.a4     => A_n,
-                   input.b4     => B,
-                   output.y1    => A_and_B,
-                   output.y2    => An_and_Bn,
-                   output.y3    => An_and_Bn_and_In,
-                   -- output.y4    => output.signal_out );
-                   output.y4    => An_and_B );
+        port map ( -- In * B
+                   a1 => B,
+                   b1 => input.signal_in,
+                   y1 => B_and_In,
+                   -- In * (not A)
+                   a2 => A_n,
+                   b2 => input.signal_in,
+                   y2 => A_n_and_In,
+                   -- not A * B
+                   a3 => A_n,
+                   b3 => B,
+                   y3 => output.signal_out,
+                   -- not used
+                   a4 => GND,
+                   b4 => GND,
+                   y4 => open );
 
-    OrChip : entity work.sn74ahc32(rtl)
-        port map ( input.a1     => A_and_B,
-                   input.b1     => input.signal_in,
-                   -- output.y1    => A_and_B_or_In,
-                   input.a2     => GND,
-                   input.b2     => GND,
-                   input.a3     => GND,
-                   input.b3     => GND,
-                   input.a4     => GND,
-                   input.b4     => GND,
-                   output.y1    => A_and_B_or_In,
-                   output.y2    => open_dummy,
-                   output.y3    => open_dummy,
-                   output.y4    => open_dummy );
+    NotChip : entity work.sn74ahc04(rtl)
+        port map ( a1 => input.signal_in,
+                   y1 => In_n,
+                   a2 => PULLUP,
+                   a3 => PULLUP,
+                   a4 => PULLUP,
+                   a5 => PULLUP,
+                   a6 => PULLUP,
+                   y2 => open,
+                   y3 => open,
+                   y4 => open,
+                   y5 => open,
+                   y6 => open );
 
-    -- update output
-    -- output.signal_out <= An_and_B;
-    output.signal_out <= B;
+    -- glue logic
+    In_n <= not input.signal_in;
 
 end architecture structure;

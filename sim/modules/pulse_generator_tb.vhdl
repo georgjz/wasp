@@ -29,7 +29,7 @@ architecture testbench of pulse_generator_tb is
     signal input    : t_to_pulse_generator;
     signal output   : t_from_pulse_generator;
     -- clock constant
-    constant HALF_PERIOD : delay_length := 50 ns; -- 7 MHz
+    constant HALF_PERIOD : delay_length := 25 ns; -- 20 MHz
 begin
 
     -- device under test
