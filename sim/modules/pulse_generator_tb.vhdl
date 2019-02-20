@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Test Bench for the Positive Pulse Generator
+-- unit name: Test Bench for the Pulse Generator
 -- author: Georg Ziegler
 --
 -- description: This testbench verfies functionality of the Pulse Generator Positive
@@ -18,11 +18,11 @@ use ieee.numeric_std.all;
 use work.wasp_records_pkg.all;
 
 -- entity declaration
-entity pulse_generator_positive_tb is
-end entity pulse_generator_positive_tb;
+entity pulse_generator_tb is
+end entity pulse_generator_tb;
 
 -- test bench architecture
-architecture testbench of pulse_generator_positive_tb is
+architecture testbench of pulse_generator_tb is
     -- test signals
     signal sys_clk  : std_logic := '0';
     signal finished : std_logic := '0';
@@ -33,7 +33,7 @@ architecture testbench of pulse_generator_positive_tb is
 begin
 
     -- device under test
-    dut : entity work.pulse_generator_positive(structure)
+    dut : entity work.pulse_generator(structure)
         port map ( input  => input,
                    output => output );
 

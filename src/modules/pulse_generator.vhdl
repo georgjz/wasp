@@ -1,11 +1,12 @@
 -------------------------------------------------------------------------------
 --
--- unit name: Positive Pulse Generator
+-- unit name: Pulse Generator
 -- author: Georg Ziegler
 --
 -- description: This module/entity generates a pulse with the length of one
--- clock cycle. The pulse is guaranteed to be high on the next falling edge, and
--- the following rising edge of the clock.
+-- clock cycle. The pulse is guaranteed to be high on the next rising edge, and
+-- the following falling edge of the clock. So the signal will satisfy setup and
+-- hold time restrictions.
 --
 -- dependencies: ieee library
 --
@@ -20,17 +21,17 @@ use ieee.numeric_std.all;
 use work.wasp_records_pkg.all;
 
 -- entity declaration
-entity pulse_generator_positive is
+entity pulse_generator is
     port    ( input  : in  t_to_pulse_generator;
               output : out t_from_pulse_generator );
 
     -- constants
     constant PULLUP : std_logic := '1';       -- represents pull-up/constant high
     constant GND    : std_logic := '0';       -- represents ground/constant low
-end entity pulse_generator_positive;
+end entity pulse_generator;
 
 -- structural architecture
-architecture structure of pulse_generator_positive is
+architecture structure of pulse_generator is
     -- internal signals
     signal A   : std_logic;    -- dlatch A
     signal A_n : std_logic;    -- dlatch A inverted

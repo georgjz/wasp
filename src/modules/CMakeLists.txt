@@ -8,5 +8,5 @@ add_sources(
     addr_output_module.vhdl         # Address LED Ouput
     control_signal_generator.vhdl   # Control signals
     data_output_module.vhdl         # Data LED Ouput
-    pulse_generator_positive.vhdl   # One-clock pulse generator
+    pulse_generator.vhdl            # One-clock pulse generator
 )
