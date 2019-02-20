@@ -52,7 +52,7 @@ begin
         'X'         when pre1_n = '0' and clr1_n = '0' else                                       -- error
         '1'         when (falling_edge(clk1) and (j1 = '1' and k1 = '0')) or pre1_n = '0' else    -- high K
         '0'         when (falling_edge(clk1) and (j1 = '0' and k1 = '1')) or clr1_n = '0' else    -- high K
-        not intern1 when j1 = '1' and k1 = '1' else                                               -- toggle
+        not intern1 when falling_edge(clk1) and j1 = '1' and k1 = '1' and pre1_n = '1' and clr1_n = '1' else                                               -- toggle
         unaffected;
 
     -- JK-flip-flop 2
@@ -60,7 +60,7 @@ begin
         'X'         when pre2_n = '0' and clr2_n = '0' else                                       -- error
         '1'         when (falling_edge(clk2) and (j2 = '1' and k2 = '0')) or pre2_n = '0' else    -- high K
         '0'         when (falling_edge(clk2) and (j2 = '0' and k2 = '1')) or clr2_n = '0' else    -- high K
-        not intern2 when j2 = '1' and k2 = '1' else                                               -- toggle
+        not intern2 when falling_edge(clk2) and j2 = '1' and k2 = '1' and pre2_n = '1' and clr2_n = '1' else                                               -- toggle
         unaffected;
 
     -- update outputs
