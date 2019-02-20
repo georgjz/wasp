@@ -70,44 +70,6 @@ package wasp_records_pkg is
         data_out    : std_logic_vector;
     end record t_from_buffer;
 
-    -- interface for quad logic chip
-    type t_to_quad_two_input_logic is record
-        a1          : std_logic;
-        b1          : std_logic;
-        a2          : std_logic;
-        b2          : std_logic;
-        a3          : std_logic;
-        b3          : std_logic;
-        a4          : std_logic;
-        b4          : std_logic;
-    end record t_to_quad_two_input_logic;
-
-    type t_from_quad_two_input_logic is record
-        y1          : std_logic;
-        y2          : std_logic;
-        y3          : std_logic;
-        y4          : std_logic;
-    end record t_from_quad_two_input_logic;
-
-    -- interface for hex logic chip
-    type t_to_hex_one_input_logic is record
-        a1          : std_logic;
-        a2          : std_logic;
-        a3          : std_logic;
-        a4          : std_logic;
-        a5          : std_logic;
-        a6          : std_logic;
-    end record t_to_hex_one_input_logic;
-
-    type t_from_hex_one_input_logic is record
-        y1          : std_logic;
-        y2          : std_logic;
-        y3          : std_logic;
-        y4          : std_logic;
-        y5          : std_logic;
-        y6          : std_logic;
-    end record t_from_hex_one_input_logic;
-
     -- interface for a pulse generator
     type t_to_pulse_generator is record
         clk         : std_logic;
@@ -117,5 +79,5 @@ package wasp_records_pkg is
     type t_from_pulse_generator is record
         signal_out  : std_logic;
     end record t_from_pulse_generator;
-    
+
 end package wasp_records_pkg;
