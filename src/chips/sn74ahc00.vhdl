@@ -19,8 +19,18 @@ use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity sn74ahc00 is
-    port ( input  : in t_to_quad_two_input_logic;
-           output : out t_from_quad_two_input_logic );
+    port ( a1 : in std_logic;
+           b1 : in std_logic;
+           a2 : in std_logic;
+           b2 : in std_logic;
+           a3 : in std_logic;
+           b3 : in std_logic;
+           a4 : in std_logic;
+           b4 : in std_logic;
+           y1 : out std_logic;
+           y2 : out std_logic;
+           y3 : out std_logic;
+           y4 : out std_logic );
 
     -- TODO: add detailed timing constants
     constant T_PD   : delay_length := 6.5 ns;     -- Propagation delay A/B to Y
@@ -35,16 +45,16 @@ architecture rtl of sn74ahc00 is
 begin
 
     -- latch inputs
-    intern1 <= (input.a1 nand input.b1);
-    intern2 <= (input.a2 nand input.b2);
-    intern3 <= (input.a3 nand input.b3);
-    intern4 <= (input.a4 nand input.b4);
+    intern1 <= (a1 nand b1);
+    intern2 <= (a2 nand b2);
+    intern3 <= (a3 nand b3);
+    intern4 <= (a4 nand b4);
 
     -- update outputs
-    output.y1 <= intern1 after T_PD;
-    output.y2 <= intern2 after T_PD;
-    output.y3 <= intern3 after T_PD;
-    output.y4 <= intern4 after T_PD;
+    y1 <= intern1 after T_PD;
+    y2 <= intern2 after T_PD;
+    y3 <= intern3 after T_PD;
+    y4 <= intern4 after T_PD;
 
     -- check metastability of latch enable signal
     -- checkMetaStability : process is
