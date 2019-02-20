@@ -19,8 +19,18 @@ use work.wasp_records_pkg.all;
 
 -- entity declaration
 entity sn74ahc04 is
-    port ( input  : in t_to_hex_one_input_logic;
-           output : out t_from_hex_one_input_logic );
+    port ( a1 : in std_logic;
+           a2 : in std_logic;
+           a3 : in std_logic;
+           a4 : in std_logic;
+           a5 : in std_logic;
+           a6 : in std_logic;
+           y1 : out std_logic;
+           y2 : out std_logic;
+           y3 : out std_logic;
+           y4 : out std_logic;
+           y5 : out std_logic;
+           y6 : out std_logic );
 
     -- TODO: add detailed timing constants
     constant T_PD   : delay_length := 6.5 ns;     -- Propagation delay A/B to Y
@@ -37,20 +47,20 @@ architecture rtl of sn74ahc04 is
 begin
 
     -- latch inputs
-    intern1 <= not input.a1;
-    intern2 <= not input.a2;
-    intern3 <= not input.a3;
-    intern4 <= not input.a4;
-    intern5 <= not input.a5;
-    intern6 <= not input.a6;
+    intern1 <= not a1;
+    intern2 <= not a2;
+    intern3 <= not a3;
+    intern4 <= not a4;
+    intern5 <= not a5;
+    intern6 <= not a6;
 
     -- update outputs
-    output.y1 <= intern1 after T_PD;
-    output.y2 <= intern2 after T_PD;
-    output.y3 <= intern3 after T_PD;
-    output.y4 <= intern4 after T_PD;
-    output.y5 <= intern5 after T_PD;
-    output.y6 <= intern6 after T_PD;
+    y1 <= intern1 after T_PD;
+    y2 <= intern2 after T_PD;
+    y3 <= intern3 after T_PD;
+    y4 <= intern4 after T_PD;
+    y5 <= intern5 after T_PD;
+    y6 <= intern6 after T_PD;
 
     -- check metastability of latch enable signal
     -- checkMetaStability : process is
