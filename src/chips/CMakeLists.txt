@@ -1,8 +1,9 @@
 # add sources
 add_sources(
+    cd74ac112.vhdl      # dual negative JK-flip-flop
     cd74ac161.vhdl      # 4-bit binary counter
     sn74ahc00.vhdl      # quad 2-input NAND
-    sn74ahc04.vhdl      # hex NOT 
+    sn74ahc04.vhdl      # hex NOT
     sn74ahc08.vhdl      # quad 2-input AND
     sn74ahc32.vhdl      # quad 2-input OR
     sn74ahc74.vhdl      # dual d-flip-flop
