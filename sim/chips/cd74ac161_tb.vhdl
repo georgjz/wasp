@@ -97,6 +97,19 @@ begin
         ent <= '1';
         wait for 1000 ns;
 
+        -- preload
+        enp <= '0';
+        load_n <= '0';
+        d <= X"f";
+        wait for 100 ns;
+
+        -- test rco
+        load_n <= '1';
+        wait for 500 ns;
+
+        ent <= '0';
+        wait for 200 ns;
+
         -- WARNING: THESE SIGNALS VIOLATE METASTABILITY
         -- violate clear recovery
         wait until falling_edge(clk);

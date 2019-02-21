@@ -37,6 +37,7 @@ package wasp_records_pkg is
 
     -- interface for address counter
     type t_to_address_counter is record
+        clk         : std_logic;
         set         : std_logic;
         inc         : std_logic;
         addr_in     : std_logic_vector;
