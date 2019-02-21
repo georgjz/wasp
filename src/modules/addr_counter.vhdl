@@ -8,7 +8,8 @@
 -- dependencies: ieee library
 --
 -------------------------------------------------------------------------------
--- TODO:
+-- TODO: Fix missing NOT and AND gates
+-- Replace logic with flip flops
 --
 -------------------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ architecture structure of addr_counter is
     signal rco1_out     : std_logic;    -- the ripple-carry from counter 1 to counter 2
     signal rco0_and_inc : std_logic;
     signal rco1_and_inc : std_logic;
+    signal rco0_rco1_and_inc : std_logic;
     signal load_n   : std_logic;        -- inverted set signal
 begin
 
@@ -42,8 +44,9 @@ begin
         port map ( clk           => input.clk,
                    clr_n         => PULLUP,
                    load_n        => load_n,
-                   ent           => PULLUP,
-                   enp           => rco1_and_inc,
+                   enp           => PULLUP,
+                   -- enp           => rco1_and_inc,
+                   ent           => rco0_rco1_and_inc,
                    rco           => open,
                    d(3)          => GND,
                    d(2 downto 0) => input.addr_in(ADDR_WIDTH - 1 downto 8),
@@ -90,6 +93,7 @@ begin
 
     -- internal glue logic
     load_n <= not input.set after 6 ns;
+    rco0_rco1_and_inc <= (rco1_and_inc and rco0_out) after 6 ns;
 
 
 end architecture structure;

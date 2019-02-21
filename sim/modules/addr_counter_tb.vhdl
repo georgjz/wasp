@@ -61,7 +61,7 @@ begin
         input.set <= '0';
         wait for HALF_PERIOD;
 
-        -- increment address thrice
+        -- increment address six times
         input.inc <= '1';
         wait for 2 * HALF_PERIOD;
         input.inc <= '0';
@@ -74,6 +74,18 @@ begin
         wait for 2 * HALF_PERIOD;
         input.inc <= '0';
         wait for 2 * HALF_PERIOD;
+        input.inc <= '1';
+        wait for 2 * HALF_PERIOD;
+        input.inc <= '0';
+        wait for 2 * HALF_PERIOD;
+        input.inc <= '1';
+        wait for 2 * HALF_PERIOD;
+        input.inc <= '0';
+        wait for 2 * HALF_PERIOD;
+        input.inc <= '1';
+        wait for 2 * HALF_PERIOD;
+        input.inc <= '0';
+        wait for 4 * HALF_PERIOD;
 
         input.addr_in <= B"111_1111_1111";
         input.set <= '1';
