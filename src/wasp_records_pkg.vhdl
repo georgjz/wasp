@@ -49,6 +49,7 @@ package wasp_records_pkg is
 
     -- interface for control signal generator
     type t_to_control_signal_generator is record
+        clk         : std_logic;
         examine     : std_logic;
         examine_next: std_logic;
     end record t_to_control_signal_generator;

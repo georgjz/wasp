@@ -24,16 +24,27 @@ entity control_signal_generator is
               output : out t_from_control_signal_generator );
 
     -- timing characteristics
-    constant T_PD : delay_length := 15 ns;
+    constant T_PD : delay_length := 10 ns;
+    -- constants
+    constant PULLUP : std_logic := '1';
 end entity control_signal_generator;
 
 -- structural architecture
 architecture structure of control_signal_generator is
-    constant PULLUP : std_logic := '1';
 begin
 
     -- address counter control signals
-    output.set_addr <= input.examine after T_PD;
+    -- output.set_addr <= input.examine after T_PD;
+    SetAddrPulse : entity work.pulse_generator(structure)
+        port map ( input.clk         => input.clk,
+                   input.signal_in   => input.examine,
+                   output.signal_out => output.set_addr );
+
+    -- IncAddrPulse : entity work.pulse_generator(structure)
+        -- port map ( input.clk         => input.clk,
+                   -- input.signal_in   => input.examine,
+                   -- output.signal_out => output.set_addr );
+
     output.inc_addr <= input.examine_next after T_PD;
 
     -- address buffer control signals
