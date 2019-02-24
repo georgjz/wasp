@@ -10,6 +10,7 @@
 -------------------------------------------------------------------------------
 -- TODO: Add pulse with check for /PRE and /CLR
 -- Make input/output port into package
+-- Improve start-up behavior for preset/clear
 -- Add metastability check for second latch
 --
 -------------------------------------------------------------------------------
@@ -44,8 +45,8 @@ end entity sn74ahc74;
 
 -- rtl architecture to check metastability
 architecture rtl of sn74ahc74 is
-    signal intern1 : std_logic := 'X';
-    signal intern2 : std_logic := 'X';
+    signal intern1 : std_logic := '0';
+    signal intern2 : std_logic := '0';
 begin
 
     -- latch input 1
