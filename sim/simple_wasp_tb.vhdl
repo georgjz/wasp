@@ -33,7 +33,7 @@ architecture testbench of simple_wasp_tb is
     signal addr_input   : std_logic_vector (10 downto 0) := (others => '0');
     signal addr_output  : std_logic_vector (10 downto 0);
     -- clock
-    constant HALF_PERIOD : delay_length := 50 ns; -- 10 MHz
+    constant HALF_PERIOD : delay_length := 25 ns; -- 10 MHz
 begin
 
     -- clock generator
@@ -59,6 +59,22 @@ begin
         examine <= '0';
         wait for 12 * HALF_PERIOD;
 
+        -- increase address
+        examine_next <= '1';
+        wait for 12 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 12 * HALF_PERIOD;
+
+        addr_input <= B"001_1010_1111";
+        wait for 6 * HALF_PERIOD;
+
+        wait for 10 * HALF_PERIOD;
+        examine <= '1';
+        wait for 12 * HALF_PERIOD;
+        examine <= '0';
+        wait for 12 * HALF_PERIOD;
+
+        -- increase address
         examine_next <= '1';
         wait for 12 * HALF_PERIOD;
         examine_next <= '0';
