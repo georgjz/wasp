@@ -22,11 +22,13 @@ entity addr_output_module is
     generic ( constant ADDR_WIDTH : integer := 11);
     port    ( input  : in  t_to_output_module ( data_in(ADDR_WIDTH - 1 downto 0));         -- latch the new address to output
               output : out t_from_output_module ( led_out(ADDR_WIDTH - 1 downto 0)) );
+
+    -- constants
+    constant GND  : std_logic := '0';       -- represents ground/constant low
 end entity addr_output_module;
 
 -- structural architecture
 architecture structure of addr_output_module is
-    constant GND  : std_logic := '0';       -- represents ground/constant low
 begin
 
     dlatch1 : entity work.sn74ahc573(rtl)
