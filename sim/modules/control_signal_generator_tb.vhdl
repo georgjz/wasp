@@ -30,7 +30,7 @@ architecture testbench of control_signal_generator_tb is
     signal examine_next : std_logic := '0';
     signal csg_output   : t_from_control_signal_generator;
     -- clock constant
-    constant HALF_PERIOD : delay_length := 25 ns; -- 20 MHz
+    constant HALF_PERIOD : delay_length := 50 ns; -- 10 MHz
 begin
 
     dut : entity work.control_signal_generator(structure)

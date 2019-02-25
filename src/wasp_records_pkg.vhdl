@@ -55,7 +55,7 @@ package wasp_records_pkg is
     end record t_to_control_signal_generator;
 
     type t_from_control_signal_generator is record
-        set_addr      : std_logic;
+        set_addr_n    : std_logic;
         inc_addr      : std_logic;
         buffer_ctrl_n : std_logic;
         ram_ctrl      : t_ram_ctrl;
