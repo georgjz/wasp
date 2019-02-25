@@ -40,7 +40,7 @@ architecture structure of simple_wasp is
     signal ram_ctrl : t_ram_ctrl;
 
     -- internal signals
-    signal set_addr : std_logic := 'U';
+    signal set_addr_n : std_logic := 'U';
     signal inc_addr : std_logic := 'U';
     signal addr_buffer_ctrl_n : std_logic := 'U';
     signal addr_output_latch  : std_logic := 'U';
@@ -63,7 +63,7 @@ begin
         port map ( input.clk => sys_clk,
                    input.examine => examine,
                    input.examine_next => examine_next,
-                   output.set_addr => set_addr,
+                   output.set_addr_n => set_addr_n,
                    output.inc_addr => inc_addr,
                    output.buffer_ctrl_n => addr_buffer_ctrl_n,
                    output.ram_ctrl => ram_ctrl,
@@ -71,7 +71,7 @@ begin
 
     addrcounter : entity work.addr_counter(structure)
         port map ( input.clk => sys_clk,
-                   input.set => set_addr,
+                   input.set => set_addr_n,
                    input.inc => inc_addr,
                    input.addr_in => addr_input,
                    output.addr_out => addr_bus_cnt_to_buffer );

@@ -32,12 +32,12 @@ end entity addr_counter;
 -- structural architecture
 architecture structure of addr_counter is
     -- internal signals
+    signal ent2         : std_logic;
+    signal ent1         : std_logic;
+    signal ent0         : std_logic;
     signal rco0_out     : std_logic;    -- the ripple-carry from counter 0 to counter 1
     signal rco1_out     : std_logic;    -- the ripple-carry from counter 1 to counter 2
-    signal rco0_and_inc : std_logic;
-    signal rco1_and_inc : std_logic;
-    signal rco0_rco1_and_inc : std_logic;
-    signal load_n   : std_logic;        -- inverted set signal
+    signal load_n       : std_logic;        -- inverted set signal
 begin
 
     counter2 : entity work.cd74ac161(rtl)
@@ -46,7 +46,8 @@ begin
                    load_n        => load_n,
                    enp           => PULLUP,
                    -- enp           => rco1_and_inc,
-                   ent           => rco0_rco1_and_inc,
+                   -- ent           => rco0_rco1_and_inc,
+                   ent           => ent2,
                    rco           => open,
                    d(3)          => GND,
                    d(2 downto 0) => input.addr_in(ADDR_WIDTH - 1 downto 8),
@@ -58,7 +59,7 @@ begin
                    clr_n  => PULLUP,
                    load_n => load_n,
                    ent    => PULLUP,
-                   enp    => rco0_and_inc,
+                   enp    => ent1,
                    rco    => rco1_out,
                    d      => input.addr_in(7 downto 4),
                    q      => output.addr_out(7 downto 4) );
@@ -73,27 +74,28 @@ begin
                    d      => input.addr_in(3 downto 0),
                    q      => output.addr_out(3 downto 0) );
 
-    AndChip : entity work.sn74ahc08(rtl)
-        port map ( -- rco0 * inc
-                   a1 => input.inc,
-                   b1 => rco0_out,
-                   y1 => rco0_and_inc,
-                   -- In * (not A)
-                   a2 => input.inc,
-                   b2 => rco1_out,
-                   y2 => rco1_and_inc,
-                   -- not used
-                   a3 => GND,
-                   b3 => GND,
-                   y3 => open,
-                   -- not used
-                   a4 => GND,
-                   b4 => GND,
-                   y4 => open );
+    -- AndChip : entity work.sn74ahc08(rtl)
+    --     port map ( -- rco0 * inc
+    --                a1 => input.inc,
+    --                b1 => rco0_out,
+    --                y1 => rco0_and_inc,
+    --                -- In * (not A)
+    --                a2 => input.inc,
+    --                b2 => rco1_out,
+    --                y2 => rco1_and_inc,
+    --                -- not used
+    --                a3 => GND,
+    --                b3 => GND,
+    --                y3 => open,
+    --                -- not used
+    --                a4 => GND,
+    --                b4 => GND,
+    --                y4 => open );
+    --
 
     -- internal glue logic
-    load_n <= not input.set after 6 ns;
-    rco0_rco1_and_inc <= (rco1_and_inc and rco0_out) after 6 ns;
-
+    load_n  <= input.set after 6 ns;
+    ent1    <= (rco0_out and input.inc) after 6 ns;
+    ent2    <= (rco1_out and ent1 and input.inc) after 6 ns;
 
 end architecture structure;

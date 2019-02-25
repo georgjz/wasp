@@ -55,8 +55,14 @@ begin
         -- just chill a bit
         wait for 10 * HALF_PERIOD;
         examine <= '1';
-        wait for 10 * HALF_PERIOD;
-        wait for 10 * HALF_PERIOD;
+        wait for 12 * HALF_PERIOD;
+        examine <= '0';
+        wait for 12 * HALF_PERIOD;
+
+        examine_next <= '1';
+        wait for 12 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 12 * HALF_PERIOD;
 
         -- stop clock and wait forever
         finished <= '1';
