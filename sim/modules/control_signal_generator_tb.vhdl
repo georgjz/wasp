@@ -54,11 +54,10 @@ begin
         examine <= '0';
         wait for 6 * HALF_PERIOD;
 
-        -- check examine next switch
-        -- examine_next <= '1';
-        -- wait for 50 ns;
-        -- examine_next <= '0';
-        -- wait for 100 ns;
+        examine_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 6 * HALF_PERIOD;
 
         -- stop clock and wait forever
         finished <= '1';

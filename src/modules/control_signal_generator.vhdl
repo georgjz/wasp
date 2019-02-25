@@ -45,23 +45,7 @@ architecture structure of control_signal_generator is
     signal Dff_C    : std_logic;
 
     signal Ex_or_Nx : std_logic;
-
-    signal An_B_C           : std_logic;
-    signal A_Bn             : std_logic;
-    signal A_Ex_or_Nx       : std_logic;
-
-    signal An_Nx            : std_logic;
-    signal An_B             : std_logic;
-    signal Bn_C             : std_logic;
-    signal B_Ex_or_Nx       : std_logic;
-
-    signal An_Bn_C          : std_logic;
-    signal An_B_Cn          : std_logic;
-    signal A_Bn_Cn          : std_logic;
-    signal A_B_Ex_or_Nx     : std_logic;
-    signal Cn_Ex            : std_logic;
 begin
-
 
     -- Dffs
     AandBDff : entity work.sn74ahc74(rtl)
@@ -97,30 +81,26 @@ begin
                    q2_n     => open );
 
     -- Glue Logic
-    Dff_A   <= (An_B_C or A_Bn or A_Ex_or_Nx) after 5 ns;
-    Dff_B   <= (An_Nx or An_B or Bn_C or B_Ex_or_Nx) after 5 ns;
-    Dff_C   <= (An_Bn_C or An_B_Cn or A_Bn_Cn or A_B_Ex_or_Nx or Cn_Ex) after 5 ns;
-
     Ex_or_Nx <= input.examine or input.examine_next;
 
-    An_B_C      <= A_n and B and C;
-    A_Bn        <= A and B_n;
-    A_Ex_or_Nx  <= A and Ex_or_Nx;
+    Dff_A   <= (A_n and B and C) or
+               (A and B_n) or
+               (A and Ex_or_Nx) after 5 ns;
 
-    An_Nx       <= A_n and input.examine_next;
-    An_B        <= A_n and B;
-    Bn_C        <= B_n and C;
-    B_Ex_or_Nx  <= B and Ex_or_Nx;
+    Dff_B   <= (B_n and C) or
+               (A_n and B and C_n) or
+               (A_n and B_n and input.examine_next) or
+               (A and B and Ex_or_Nx) after 5 ns;
 
-    An_Bn_C     <= A_n and B_n and C;
-    An_B_Cn     <= A_n and B and C_n;
-    A_Bn_Cn     <= A and B_n and C_n;
-    A_B_Ex_or_Nx<= A and B and Ex_or_Nx;
-    Cn_Ex       <= C_n and input.examine;
+    Dff_C   <= (A_n and B_n and C) or
+               (A_n and B and C_n) or
+               (A and B_n and C_n) or
+               (A and B and Ex_or_Nx) or
+               (C_n and input.examine) after 5 ns;
 
     -- update output
     output.set_addr_n       <= (A or B or C_n) after 5 ns;
-    output.inc_addr         <= An_B_Cn after 5 ns;
+    output.inc_addr         <= (A_n and B and C_n) after 5 ns;
     output.buffer_ctrl_n    <= (A_n or (B and C)) after 5 ns;
     output.ram_ctrl.cs_n    <= (A_n or (B_n and C_n) or (B and C)) after 5 ns;
     output.ram_ctrl.we_n    <= PULLUP;
