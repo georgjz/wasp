@@ -24,8 +24,8 @@ end entity simple_wasp_tb;
 -- test bench architecture
 architecture testbench of simple_wasp_tb is
     -- test signals
-    signal sys_clk  : std_logic := '0';
-    signal finished : std_logic := '0';
+    signal sys_clk      : std_logic := '0';
+    signal finished     : std_logic := '0';
     signal examine      : std_logic := '0';
     signal examine_next : std_logic := '0';
     signal data_input   : std_logic_vector (7 downto 0) := (others => '0');
@@ -41,23 +41,23 @@ begin
 
     -- RAM
     wasp : entity work.simple_wasp(structure)
-        port map ( sys_clk => sys_clk,
-                   examine  => examine,
+        port map ( sys_clk      => sys_clk,
+                   examine      => examine,
                    examine_next => examine_next,
-                   data_input => data_input,
-                   data_output => data_output,
-                   addr_input  => addr_input,
-                   addr_output => addr_output );
+                   data_input   => data_input,
+                   data_output  => data_output,
+                   addr_input   => addr_input,
+                   addr_output  => addr_output );
 
     -- code
     stimulus : process is
     begin
         -- just chill a bit
-        wait for 10 * HALF_PERIOD;
+        wait for 11 * HALF_PERIOD;
         examine <= '1';
         wait for 12 * HALF_PERIOD;
         examine <= '0';
-        wait for 12 * HALF_PERIOD;
+        wait for 11 * HALF_PERIOD;
 
         -- increase address
         examine_next <= '1';
@@ -68,11 +68,11 @@ begin
         addr_input <= B"001_1010_1111";
         wait for 6 * HALF_PERIOD;
 
-        wait for 10 * HALF_PERIOD;
+        wait for 11 * HALF_PERIOD;
         examine <= '1';
         wait for 12 * HALF_PERIOD;
         examine <= '0';
-        wait for 12 * HALF_PERIOD;
+        wait for 11 * HALF_PERIOD;
 
         -- increase address
         examine_next <= '1';

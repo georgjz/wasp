@@ -24,6 +24,9 @@ entity idt6116xaxx is
     port    ( data  : inout std_logic_vector (DATA_WIDTH - 1 downto 0);
               addr  : in    std_logic_vector (ADDR_WIDTH - 1 downto 0);
               ctrl  : in    t_ram_ctrl );
+
+    -- timing constants
+    constant T_ACS : delay_length := 15 ns;     -- memory access time
 end entity idt6116xaxx;
 
 -- rtl architecture with metastability and timing checks
@@ -44,7 +47,7 @@ begin
     readFromMemory : process (addr, ctrl.cs_n, ctrl.oe_n, ctrl.we_n, mem) is
     begin
         if (ctrl.cs_n = '0' and ctrl.oe_n = '0' and ctrl.we_n = '1') then
-            intern <= mem(to_integer(unsigned(addr)));
+            intern <= mem(to_integer(unsigned(addr))) after T_ACS;
         end if;
     end process;
 
