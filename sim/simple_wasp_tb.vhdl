@@ -28,9 +28,12 @@ architecture testbench of simple_wasp_tb is
     signal finished     : std_logic := '0';
     signal examine      : std_logic := '0';
     signal examine_next : std_logic := '0';
-    signal data_input   : std_logic_vector (7 downto 0) := (others => '0');
+    signal deposit      : std_logic := '0';
+    signal deposit_next : std_logic := '0';
+    -- signal data_input   : std_logic_vector (7 downto 0) := (others => '0');
+    -- signal addr_input   : std_logic_vector (10 downto 0) := (others => '0');
+    signal switch_input : std_logic_vector (10 downto 0) := (others => 'U');
     signal data_output  : std_logic_vector (7 downto 0);
-    signal addr_input   : std_logic_vector (10 downto 0) := (others => '0');
     signal addr_output  : std_logic_vector (10 downto 0);
     -- clock
     constant HALF_PERIOD : delay_length := 25 ns; -- 10 MHz
@@ -44,37 +47,89 @@ begin
         port map ( sys_clk      => sys_clk,
                    examine      => examine,
                    examine_next => examine_next,
-                   data_input   => data_input,
+                   deposit      => deposit,
+                   deposit_next => deposit_next,
+                   switch_input => switch_input,
                    data_output  => data_output,
-                   addr_input   => addr_input,
                    addr_output  => addr_output );
 
     -- code
     stimulus : process is
     begin
         -- just chill a bit
-        wait for 11 * HALF_PERIOD;
-        examine <= '1';
-        wait for 12 * HALF_PERIOD;
-        examine <= '0';
-        wait for 11 * HALF_PERIOD;
+        wait for 11.5 * HALF_PERIOD;
 
-        -- increase address
+        -- fill some dummy data starting at $080
+        switch_input <= B"000_1000_0000";
+        examine <= '1';
+        wait for 10 * HALF_PERIOD;
+        examine <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0000_0000";
+        deposit <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0000_0001";
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0000_0010";
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0000_0100";
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0000_1000";
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 10 * HALF_PERIOD;
+
+        switch_input <= B"000_0001_0000";
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 10 * HALF_PERIOD;
+
+
+        -- reset address
+        switch_input <= B"000_1000_0000";
+        examine <= '1';
+        wait for 10 * HALF_PERIOD;
+        examine <= '0';
+        wait for 10 * HALF_PERIOD;
+
         examine_next <= '1';
         wait for 12 * HALF_PERIOD;
         examine_next <= '0';
         wait for 12 * HALF_PERIOD;
 
-        addr_input <= B"001_1010_1111";
-        wait for 6 * HALF_PERIOD;
-
-        wait for 11 * HALF_PERIOD;
-        examine <= '1';
+        examine_next <= '1';
         wait for 12 * HALF_PERIOD;
-        examine <= '0';
-        wait for 11 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 12 * HALF_PERIOD;
 
-        -- increase address
+        examine_next <= '1';
+        wait for 12 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 12 * HALF_PERIOD;
+
+        examine_next <= '1';
+        wait for 12 * HALF_PERIOD;
+        examine_next <= '0';
+        wait for 12 * HALF_PERIOD;
+
         examine_next <= '1';
         wait for 12 * HALF_PERIOD;
         examine_next <= '0';

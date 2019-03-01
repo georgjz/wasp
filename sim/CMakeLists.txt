@@ -4,5 +4,5 @@ add_subdirectory(modules/)
 
 # add sources
 add_test_sources(
-    # simple_wasp_tb.vhdl
+    simple_wasp_tb.vhdl
 )
