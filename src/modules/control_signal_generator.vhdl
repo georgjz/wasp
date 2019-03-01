@@ -39,12 +39,21 @@ architecture structure of control_signal_generator is
     signal B_n      : std_logic;
     signal C        : std_logic;
     signal C_n      : std_logic;
+    signal D        : std_logic;
+    signal D_n      : std_logic;
+
+    signal ABCD     : std_logic;
+    signal ABCD_n   : std_logic;
 
     signal Dff_A    : std_logic;
     signal Dff_B    : std_logic;
     signal Dff_C    : std_logic;
+    signal Dff_D    : std_logic;
 
-    signal Ex_or_Nx : std_logic;
+    signal ISS          : std_logic;
+    signal DeNx_De_ExNx : std_logic;
+    signal DeNx_De_Ex   : std_logic;
+    signal De_ExNx_Ex   : std_logic;
 begin
 
     -- Dffs
@@ -73,38 +82,52 @@ begin
                    q1       => C,
                    q1_n     => C_n,
                    -- unused Dff
-                   clk2     => GND,
+                   clk2     => input.clk,
                    pre2_n   => PULLUP,
                    clr2_n   => PULLUP,
-                   d2       => GND,
-                   q2       => open,
-                   q2_n     => open );
+                   d2       => Dff_D,
+                   q2       => D,
+                   q2_n     => D_n );
 
     -- Glue Logic
-    Ex_or_Nx <= input.examine or input.examine_next;
+    ISS <= input.deposit_next or input.deposit or input.examine_next or input.examine;
+    DeNx_De_ExNx <= input.deposit_next or input.deposit or input.examine_next;
+    DeNx_De_Ex   <= input.deposit_next or input.deposit or input.examine;
+    De_ExNx_Ex <= input.deposit or input.examine_next or input.examine;
 
-    Dff_A   <= (A_n and B and C) or
-               (A and B_n) or
-               (A and Ex_or_Nx) after 5 ns;
+    ABCD    <= A and B and C and D;
+    ABCD_n  <= A_n and B_n and C_n and D_n;
 
-    Dff_B   <= (B_n and C) or
-               (A_n and B and C_n) or
-               (A_n and B_n and input.examine_next) or
-               (A and B and Ex_or_Nx) after 5 ns;
+    Dff_A   <= (A and D) or
+               (A and (B xor C)) or
+               (ABCD_n and DeNx_De_ExNx) after 5 ns;
 
-    Dff_C   <= (A_n and B_n and C) or
-               (A_n and B and C_n) or
-               (A and B_n and C_n) or
-               (A and B and Ex_or_Nx) or
-               (C_n and input.examine) after 5 ns;
+    Dff_B   <= (B and C_n) or
+               (B_n and C and D) or
+               (B and D_n and De_ExNx_Ex) or
+               (A_n and C_n and D_n and input.deposit_next) or
+               (A_n and B and input.deposit_next) after 5 ns;
+
+    Dff_C   <= (C_n and D) or
+               (C and D_n and (B_n or ISS)) or
+               (B_n and D_n and (A or input.deposit_next)) or
+               (A_n and B and C and ISS) after 5 ns;
+
+    Dff_D   <= (D_n and (B xor C)) or
+               (B and C and ISS) or
+               ABCD or
+               (A_n and D_n and DeNx_De_Ex) after 5 ns;
 
     -- update output
-    output.set_addr_n       <= (A or B or C_n) after 5 ns;
-    output.inc_addr         <= (A_n and B and C_n) after 5 ns;
-    output.buffer_ctrl_n    <= (A_n or (B and C)) after 5 ns;
-    output.ram_ctrl.cs_n    <= (A_n or (B_n and C_n) or (B and C)) after 5 ns;
-    output.ram_ctrl.we_n    <= PULLUP;
-    output.ram_ctrl.oe_n    <= (A_n or (B_n and C_n) or (B and C)) after 5 ns;
-    output.addr_output      <= (A and B and C_n) after 5 ns;
+    output.set_addr_n       <= (A or B or C or D_n) after 5 ns;
+    output.inc_addr         <= (ABCD or (A and B_n and C_n and D_n)) after 5 ns;
+    output.buffer_addr_n    <= ((B_n and C_n) or (B_n and D_n) or (B and C and D)) after 5 ns;
+    output.latch_data       <= A and B_n and C_n and D after 5 ns;
+    output.buffer_data_n    <= (A_n or (B_n and C_n) or (B_n and D_n) or (B and C and D)) after 5 ns;
+
+    output.ram_ctrl.cs_n    <= (B_n or (C and D)) after 5 ns;
+    output.ram_ctrl.we_n    <= (A_n or B_n or (C and D)) after 5 ns;
+    output.ram_ctrl.oe_n    <= (A or B_n or (C and D)) after 5 ns;
+    output.addr_output      <= (B and C_n and D) after 5 ns;
 
 end architecture structure;

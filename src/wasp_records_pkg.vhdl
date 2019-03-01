@@ -52,12 +52,16 @@ package wasp_records_pkg is
         clk         : std_logic;
         examine     : std_logic;
         examine_next: std_logic;
+        deposit     : std_logic;
+        deposit_next: std_logic;
     end record t_to_control_signal_generator;
 
     type t_from_control_signal_generator is record
         set_addr_n    : std_logic;
         inc_addr      : std_logic;
-        buffer_ctrl_n : std_logic;
+        buffer_addr_n : std_logic;
+        latch_data    : std_logic;
+        buffer_data_n : std_logic;
         ram_ctrl      : t_ram_ctrl;
         addr_output   : std_logic;
     end record t_from_control_signal_generator;

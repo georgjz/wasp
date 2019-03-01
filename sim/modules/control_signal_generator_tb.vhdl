@@ -28,15 +28,19 @@ architecture testbench of control_signal_generator_tb is
     signal finished     : std_logic := '0';
     signal examine      : std_logic := '0';
     signal examine_next : std_logic := '0';
+    signal deposit      : std_logic := '0';
+    signal deposit_next : std_logic := '0';
     signal csg_output   : t_from_control_signal_generator;
     -- clock constant
-    constant HALF_PERIOD : delay_length := 50 ns; -- 10 MHz
+    constant HALF_PERIOD : delay_length := 25 ns; -- 10 MHz
 begin
 
     dut : entity work.control_signal_generator(structure)
-        port map ( input.clk     => sys_clk,
-                   input.examine => examine,
-                   input.examine_next => examine_next,
+        port map ( input.clk            => sys_clk,
+                   input.examine        => examine,
+                   input.examine_next   => examine_next,
+                   input.deposit        => deposit,
+                   input.deposit_next   => deposit_next,
                    output => csg_output );
 
     -- clock generation
@@ -46,18 +50,29 @@ begin
     stimulus : process is
     begin
         -- check idle state
-        wait for 6 * HALF_PERIOD;
+        wait for 6.5 * HALF_PERIOD;
 
         -- check examine switch
         examine <= '1';
         wait for 10 * HALF_PERIOD;
         examine <= '0';
-        wait for 6 * HALF_PERIOD;
+        wait for 8 * HALF_PERIOD;
 
         examine_next <= '1';
         wait for 10 * HALF_PERIOD;
         examine_next <= '0';
-        wait for 6 * HALF_PERIOD;
+        wait for 8 * HALF_PERIOD;
+
+        -- check deposit switch
+        deposit <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit <= '0';
+        wait for 8 * HALF_PERIOD;
+
+        deposit_next <= '1';
+        wait for 10 * HALF_PERIOD;
+        deposit_next <= '0';
+        wait for 8 * HALF_PERIOD;
 
         -- stop clock and wait forever
         finished <= '1';
